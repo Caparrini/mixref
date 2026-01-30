@@ -6,11 +6,14 @@ import sys
 # Add src to path for autodoc
 sys.path.insert(0, os.path.abspath("../../src"))
 
+# Import version from package
+from mixref import __version__
+
 # -- Project information -----------------------------------------------------
 project = "mixref"
 copyright = "2026, mixref"
 author = "mixref"
-release = "0.2.0"
+release = __version__
 
 # -- General configuration ---------------------------------------------------
 extensions = [
