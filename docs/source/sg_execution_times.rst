@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.357** total execution time for 4 files **from all galleries**:
+**00:02.254** total execution time for 5 files **from all galleries**:
 
 .. container::
 
@@ -32,8 +32,11 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
+   * - :ref:`sphx_glr_auto_examples_meters_plot_lufs_and_targets.py` (``examples/meters/plot_lufs_and_targets.py``)
+     - 00:02.254
+     - 0.0
    * - :ref:`sphx_glr_auto_examples_audio_plot_audio_validation.py` (``examples/audio/plot_audio_validation.py``)
-     - 00:00.357
+     - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_auto_examples_audio_plot_error_handling.py` (``examples/audio/plot_error_handling.py``)
      - 00:00.000
