@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.abspath("../../src"))
 project = "mixref"
 copyright = "2026, mixref"
 author = "mixref"
-release = "0.1.0"
+release = "0.2.0"
 
 # -- General configuration ---------------------------------------------------
 extensions = [
@@ -29,7 +29,7 @@ html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
 
 # Suppress warnings
-suppress_warnings = ["config.cache"]
+suppress_warnings = ["config.cache", "autodoc.duplicate"]
 
 # -- Napoleon settings (Google-style docstrings) ----------------------------
 napoleon_google_docstring = True
