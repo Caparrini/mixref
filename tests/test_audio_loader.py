@@ -6,6 +6,11 @@ import numpy as np
 import pytest
 import soundfile as sf
 
+from mixref.audio.exceptions import (
+    AudioFileNotFoundError,
+    CorruptFileError,
+    UnsupportedFormatError,
+)
 from mixref.audio.loader import load_audio
 from synthetic_audio import generate_sine_wave, generate_stereo
 
@@ -97,7 +102,7 @@ def test_load_audio_preserve_sr(temp_audio_files: dict[str, Path]) -> None:
 
 def test_load_audio_file_not_found() -> None:
     """Test error handling for missing file."""
-    with pytest.raises(FileNotFoundError, match="Audio file not found"):
+    with pytest.raises(AudioFileNotFoundError, match="Audio file not found"):
         load_audio("nonexistent_file.wav")
 
 
@@ -107,7 +112,7 @@ def test_load_audio_invalid_file(tmp_path: Path) -> None:
     invalid_file = tmp_path / "invalid.wav"
     invalid_file.write_text("This is not audio data")
 
-    with pytest.raises(RuntimeError, match="Failed to read audio file"):
+    with pytest.raises(CorruptFileError, match="Failed to read audio file"):
         load_audio(invalid_file)
 
 
@@ -138,3 +143,42 @@ def test_load_audio_amplitude_range(temp_audio_files: dict[str, Path]) -> None:
 
     # Audio should be normalized float32 in range [-1, 1]
     assert -1.0 <= audio.min() <= audio.max() <= 1.0
+
+
+def test_unsupported_format_error(tmp_path: Path) -> None:
+    """Test error handling for unsupported file formats."""
+    # Create a file with unsupported extension
+    unsupported_file = tmp_path / "track.xyz"
+    unsupported_file.write_text("fake audio data")
+
+    with pytest.raises(UnsupportedFormatError) as exc_info:
+        load_audio(unsupported_file)
+
+    assert ".xyz" in str(exc_info.value)
+    assert "Supported formats" in str(exc_info.value)
+
+
+def test_audio_file_not_found_error_attributes() -> None:
+    """Test AudioFileNotFoundError preserves path information."""
+    try:
+        load_audio("missing.wav")
+    except AudioFileNotFoundError as e:
+        assert e.path == "missing.wav"
+        assert "missing.wav" in str(e)
+    else:
+        pytest.fail("Expected AudioFileNotFoundError")
+
+
+def test_corrupt_file_error_attributes(tmp_path: Path) -> None:
+    """Test CorruptFileError preserves original exception."""
+    corrupt_file = tmp_path / "corrupt.wav"
+    corrupt_file.write_bytes(b"RIFF\x00\x00\x00\x00WAVEfmt ")
+
+    try:
+        load_audio(corrupt_file)
+    except CorruptFileError as e:
+        assert e.path == str(corrupt_file)
+        assert e.original_error is not None
+        assert "corrupt or invalid" in str(e).lower()
+    else:
+        pytest.fail("Expected CorruptFileError")

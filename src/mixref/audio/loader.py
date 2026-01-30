@@ -11,8 +11,17 @@ import numpy as np
 import numpy.typing as npt
 import soundfile as sf
 
+from mixref.audio.exceptions import (
+    AudioFileNotFoundError,
+    CorruptFileError,
+    UnsupportedFormatError,
+)
+
 
 ChannelMode = Literal["mono", "stereo", "auto"]
+
+# Supported audio formats
+SUPPORTED_FORMATS = {".wav", ".flac", ".mp3", ".ogg", ".aiff", ".aif"}
 
 
 def load_audio(
@@ -41,8 +50,9 @@ def load_audio(
             - sample_rate: Sample rate in Hz
 
     Raises:
-        FileNotFoundError: If audio file doesn't exist
-        RuntimeError: If file cannot be read or is corrupt
+        AudioFileNotFoundError: If audio file doesn't exist
+        UnsupportedFormatError: If file format is not supported
+        CorruptFileError: If file cannot be read or is corrupt
 
     Example:
         >>> # Load stereo audio
@@ -59,14 +69,20 @@ def load_audio(
     """
     path = Path(path)
 
+    # Check if file exists
     if not path.exists():
-        raise FileNotFoundError(f"Audio file not found: {path}")
+        raise AudioFileNotFoundError(str(path))
 
+    # Check if format is supported
+    file_ext = path.suffix.lower()
+    if file_ext not in SUPPORTED_FORMATS:
+        raise UnsupportedFormatError(str(path), format_=file_ext)
+
+    # Try to load the audio file
     try:
-        # Load audio with soundfile
         audio, file_sr = sf.read(path, dtype="float32", always_2d=False)
     except Exception as e:
-        raise RuntimeError(f"Failed to read audio file {path}: {e}") from e
+        raise CorruptFileError(str(path), original_error=e) from e
 
     # Ensure we have the right shape
     if audio.ndim == 1:
