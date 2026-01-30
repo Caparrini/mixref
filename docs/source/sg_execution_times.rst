@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:03.356** total execution time for 6 files **from all galleries**:
+**00:15.352** total execution time for 6 files **from all galleries**:
 
 .. container::
 
@@ -32,21 +32,21 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_cli_plot_analyze_command.py` (``examples/cli/plot_analyze_command.py``)
-     - 00:03.356
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_audio_plot_audio_validation.py` (``examples/audio/plot_audio_validation.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_audio_plot_error_handling.py` (``examples/audio/plot_error_handling.py``)
-     - 00:00.000
-     - 0.0
    * - :ref:`sphx_glr_auto_examples_audio_plot_loading_audio_files.py` (``examples/audio/plot_loading_audio_files.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_intro_plot_getting_started.py` (``examples/intro/plot_getting_started.py``)
-     - 00:00.000
+     - 00:14.695
      - 0.0
    * - :ref:`sphx_glr_auto_examples_meters_plot_lufs_and_targets.py` (``examples/meters/plot_lufs_and_targets.py``)
-     - 00:00.000
+     - 00:00.336
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_audio_plot_audio_validation.py` (``examples/audio/plot_audio_validation.py``)
+     - 00:00.233
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_cli_plot_analyze_command.py` (``examples/cli/plot_analyze_command.py``)
+     - 00:00.079
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_audio_plot_error_handling.py` (``examples/audio/plot_error_handling.py``)
+     - 00:00.008
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_intro_plot_getting_started.py` (``examples/intro/plot_getting_started.py``)
+     - 00:00.001
      - 0.0
