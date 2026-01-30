@@ -5,3 +5,13 @@ Audio Module
    :members:
    :undoc-members:
    :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   loader
+   exceptions
+   validation
