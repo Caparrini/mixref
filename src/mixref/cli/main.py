@@ -4,6 +4,7 @@ import typer
 from rich.console import Console
 
 from mixref import __version__
+from mixref.cli.analyze import analyze_command
 
 app = typer.Typer(
     name="mixref",
@@ -37,6 +38,10 @@ def main(
     Sharp, opinionated insights for electronic music production.
     """
     pass
+
+
+# Register commands
+app.command(name="analyze")(analyze_command)
 
 
 if __name__ == "__main__":
