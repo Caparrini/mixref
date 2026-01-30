@@ -37,6 +37,13 @@ dev = [
     "ruff>=0.2.0",
     "types-setuptools>=69.0.0",
 ]
+docs = [
+    "sphinx>=7.2.0",
+    "sphinx-gallery>=0.15.0",
+    "sphinx-rtd-theme>=2.0.0",
+    "matplotlib>=3.8.0",
+    "pillow>=10.2.0",
+]
 
 [project.scripts]
 mixref = "mixref.cli.main:app"
