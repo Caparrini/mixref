@@ -1,10 +1,14 @@
 Audio Module
 ============
 
-.. automodule:: mixref.audio
-   :members:
-   :undoc-members:
-   :show-inheritance:
+Main audio module for loading and validating audio files.
+
+.. currentmodule:: mixref.audio
+
+Functions
+---------
+
+.. autofunction:: load_audio
 
 Submodules
 ----------
