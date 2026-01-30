@@ -100,13 +100,13 @@ Built with:
 ## 🔗 Links
 
 - **PyPI**: https://pypi.org/project/mixref/
-- **Documentation**: https://<user>.github.io/mixref/
-- **Source**: https://github.com/<user>/mixref
-- **Codecov**: https://codecov.io/gh/<user>/mixref
+- **Documentation**: https://caparrini.github.io/mixref/
+- **Source**: https://github.com/caparrini/mixref
+- **Codecov**: https://codecov.io/gh/caparrini/mixref
 
 ## 📝 Full Changelog
 
-See [CHANGELOG.md](https://github.com/<user>/mixref/blob/main/CHANGELOG.md) for detailed changes.
+See [CHANGELOG.md](https://github.com/caparrini/mixref/blob/main/CHANGELOG.md) for detailed changes.
 
 ---
 

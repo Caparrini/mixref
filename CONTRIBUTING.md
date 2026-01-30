@@ -13,7 +13,7 @@ Thank you for your interest in contributing! 🎧
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/mixref.git
+git clone https://github.com/caparrini/mixref.git
 cd mixref
 
 # Install all dependencies (including dev and docs)

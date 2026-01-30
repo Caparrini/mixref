@@ -213,8 +213,8 @@ Fix any warnings/errors.
 Add to README.md:
 
 ```markdown
-[![Tests](https://github.com/<user>/mixref/actions/workflows/test.yml/badge.svg)](https://github.com/<user>/mixref/actions/workflows/test.yml)
-[![Docs](https://github.com/<user>/mixref/actions/workflows/docs.yml/badge.svg)](https://github.com/<user>/mixref/actions/workflows/docs.yml)
+[![Tests](https://github.com/caparrini/mixref/actions/workflows/test.yml/badge.svg)](https://github.com/caparrini/mixref/actions/workflows/test.yml)
+[![Docs](https://github.com/caparrini/mixref/actions/workflows/docs.yml/badge.svg)](https://github.com/caparrini/mixref/actions/workflows/docs.yml)
 [![PyPI](https://img.shields.io/pypi/v/mixref)](https://pypi.org/project/mixref/)
-[![codecov](https://codecov.io/gh/<user>/mixref/branch/main/graph/badge.svg)](https://codecov.io/gh/<user>/mixref)
+[![codecov](https://codecov.io/gh/caparrini/mixref/branch/main/graph/badge.svg)](https://codecov.io/gh/caparrini/mixref)
 ```
