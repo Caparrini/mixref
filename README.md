@@ -1,5 +1,12 @@
 # mixref
 
+[![Tests](https://github.com/yourusername/mixref/actions/workflows/test.yml/badge.svg)](https://github.com/yourusername/mixref/actions/workflows/test.yml)
+[![Documentation](https://github.com/yourusername/mixref/actions/workflows/docs.yml/badge.svg)](https://github.com/yourusername/mixref/actions/workflows/docs.yml)
+[![Code Quality](https://github.com/yourusername/mixref/actions/workflows/quality.yml/badge.svg)](https://github.com/yourusername/mixref/actions/workflows/quality.yml)
+[![PyPI](https://img.shields.io/pypi/v/mixref)](https://pypi.org/project/mixref/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/mixref)](https://pypi.org/project/mixref/)
+[![License](https://img.shields.io/github/license/yourusername/mixref)](LICENSE)
+
 CLI Audio Analyzer for Music Producers
 
 > **Status**: Active Development 🚧
@@ -53,7 +60,23 @@ mypy src/
 
 # Lint
 ruff check src/
+
+# Build docs
+cd docs && make html
 ```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed development guidelines.
+
+## CI/CD
+
+This project uses GitHub Actions for continuous integration:
+
+- ✅ **Tests**: Python 3.12-3.13 on Ubuntu, macOS, Windows
+- 📚 **Docs**: Auto-deployed to GitHub Pages
+- 🔍 **Quality**: Linting, type checking, coverage (85%+)
+- 📦 **Publish**: Automated PyPI releases
+
+See [.github/CICD_SETUP.md](.github/CICD_SETUP.md) for CI/CD configuration details.
 
 ## License
 

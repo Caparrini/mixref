@@ -2,7 +2,6 @@
 
 import numpy as np
 import pytest
-
 from synthetic_audio import (
     generate_clipped_signal,
     generate_pink_noise,

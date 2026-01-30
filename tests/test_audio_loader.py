@@ -5,6 +5,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 import soundfile as sf
+from synthetic_audio import generate_sine_wave, generate_stereo
 
 from mixref.audio.exceptions import (
     AudioFileNotFoundError,
@@ -12,7 +13,6 @@ from mixref.audio.exceptions import (
     UnsupportedFormatError,
 )
 from mixref.audio.loader import load_audio
-from synthetic_audio import generate_sine_wave, generate_stereo
 
 
 @pytest.fixture

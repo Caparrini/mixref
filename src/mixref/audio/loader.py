@@ -17,7 +17,6 @@ from mixref.audio.exceptions import (
     UnsupportedFormatError,
 )
 
-
 ChannelMode = Literal["mono", "stereo", "auto"]
 
 # Supported audio formats
@@ -128,7 +127,8 @@ def _stereo_to_mono(audio: npt.NDArray[np.float32]) -> npt.NDArray[np.float32]:
     Returns:
         Mono audio array with shape (samples,)
     """
-    return np.mean(audio, axis=1)
+    mono: npt.NDArray[np.float32] = np.mean(audio, axis=1).astype(np.float32)
+    return mono
 
 
 def _resample(
@@ -151,16 +151,21 @@ def _resample(
     import librosa
 
     if audio.ndim == 1:
-        # Mono
-        return librosa.resample(audio, orig_sr=orig_sr, target_sr=target_sr)
+        # Mono - librosa returns Any, cast explicitly
+        result = librosa.resample(audio, orig_sr=orig_sr, target_sr=target_sr)
+        resampled: npt.NDArray[np.float32] = result.astype(np.float32)
+        return resampled
     else:
         # Stereo - resample each channel
         resampled_channels = []
         for ch in range(audio.shape[1]):
-            resampled = librosa.resample(
+            resampled_ch = librosa.resample(
                 audio[:, ch],
                 orig_sr=orig_sr,
                 target_sr=target_sr,
             )
-            resampled_channels.append(resampled)
-        return np.stack(resampled_channels, axis=1)
+            resampled_channels.append(resampled_ch)
+        stereo: npt.NDArray[np.float32] = np.stack(resampled_channels, axis=1).astype(
+            np.float32
+        )
+        return stereo

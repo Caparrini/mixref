@@ -102,9 +102,7 @@ class CorruptFileError(AudioError):
         self.path = path
         self.original_error = original_error
         if message is None:
-            message = (
-                f"Failed to read audio file (corrupt or invalid format): {path}"
-            )
+            message = f"Failed to read audio file (corrupt or invalid format): {path}"
             if original_error:
                 message += f"\nOriginal error: {original_error}"
         super().__init__(message)
