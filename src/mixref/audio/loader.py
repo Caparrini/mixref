@@ -165,7 +165,5 @@ def _resample(
                 target_sr=target_sr,
             )
             resampled_channels.append(resampled_ch)
-        stereo: npt.NDArray[np.float32] = np.stack(resampled_channels, axis=1).astype(
-            np.float32
-        )
+        stereo: npt.NDArray[np.float32] = np.stack(resampled_channels, axis=1).astype(np.float32)
         return stereo
