@@ -13,5 +13,4 @@ Submodules
    :maxdepth: 1
 
    loader
-   exceptions
    validation

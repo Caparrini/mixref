@@ -56,7 +56,7 @@ def get_audio_info(path: str | Path) -> AudioInfo:
     try:
         info = sf.info(str(path_obj))
     except Exception as e:
-        raise CorruptFileError(str(path), original_error=str(e)) from e
+        raise CorruptFileError(str(path), original_error=e) from e
 
     return AudioInfo(
         duration=info.duration,

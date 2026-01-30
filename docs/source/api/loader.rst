@@ -5,8 +5,4 @@ Audio Loader
    :members:
    :undoc-members:
    :show-inheritance:
-
-Functions
----------
-
-.. autofunction:: mixref.audio.loader.load_audio
+   :no-index:
