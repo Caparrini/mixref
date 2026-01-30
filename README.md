@@ -42,6 +42,13 @@ pip install mixref
 uv pip install mixref
 ```
 
+### System Requirements
+
+- **Python**: 3.12 or 3.13
+- **Platforms**: Linux, macOS, Windows
+
+> **⚠️ Known Issue**: Python 3.13 on Windows is not currently supported due to numpy/librosa compatibility issues. Windows users should use Python 3.12. This limitation does not affect Linux or macOS.
+
 ## Quick Start
 
 ```python

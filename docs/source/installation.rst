@@ -4,8 +4,13 @@ Installation
 Requirements
 ------------
 
-- Python 3.12 or higher
+- Python 3.12 or 3.13
 - pip or uv package manager
+
+.. warning::
+
+   **Python 3.13 on Windows**: Currently not supported due to numpy/librosa compatibility issues.
+   Windows users should use Python 3.12. This limitation does not affect Linux or macOS users.
 
 Install from PyPI
 -----------------
@@ -27,7 +32,7 @@ Clone the repository:
 
 .. code-block:: bash
 
-   git clone https://github.com/yourusername/mixref.git
+   git clone https://github.com/caparrini/mixref.git
    cd mixref
 
 Install with uv:
@@ -53,6 +58,17 @@ You should see output like::
 
 System Requirements
 -------------------
+
+**Supported Platforms**
+
+- **Linux**: Python 3.12, 3.13 ✅
+- **macOS**: Python 3.12, 3.13 ✅
+- **Windows**: Python 3.12 only ⚠️
+
+.. note::
+
+   Our CI/CD pipeline tests on all three platforms. See test results at 
+   https://github.com/caparrini/mixref/actions
 
 **Audio Libraries**
 
