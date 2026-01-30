@@ -29,7 +29,7 @@ html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
 
 # Suppress warnings
-suppress_warnings = ["config.cache", "ref.duplicate", "ref.python", "ref.any", "intersphinx.external"]
+suppress_warnings = ["config.cache", "ref.duplicate", "intersphinx.external"]
 
 # -- Napoleon settings (Google-style docstrings) ----------------------------
 napoleon_google_docstring = True
@@ -69,8 +69,7 @@ intersphinx_mapping = {
     "librosa": ("https://librosa.org/doc/latest/", None),
 }
 
-# Don't fail on intersphinx connection errors
-intersphinx_disabled_reftypes = []
+# Set a reasonable timeout for intersphinx to avoid long waits
 intersphinx_timeout = 5
 
 # -- Autodoc configuration ---------------------------------------------------
