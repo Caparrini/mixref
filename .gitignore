@@ -36,3 +36,13 @@ ENV/
 # OS
 .DS_Store
 Thumbs.db
+
+# Audio test files (too large for git)
+data/*.wav
+data/*.flac
+data/*.mp3
+data/*.ogg
+data/*.aiff
+
+# Keep the directory but ignore audio files
+!data/.gitkeep
