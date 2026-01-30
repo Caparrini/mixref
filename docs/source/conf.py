@@ -28,6 +28,9 @@ exclude_patterns = []
 html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
 
+# Suppress warnings
+suppress_warnings = ["config.cache"]
+
 # -- Napoleon settings (Google-style docstrings) ----------------------------
 napoleon_google_docstring = True
 napoleon_numpy_docstring = False

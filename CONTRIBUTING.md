@@ -82,11 +82,12 @@ uv run pytest
    - Runnable code using synthetic audio
    - Producer-focused workflows
 
-4. ✅ **Quality** - All checks passing
-   - Tests pass
-   - Type checking passes
-   - Linting passes
-   - Docs build without warnings
+4. ✅ **Quality** - All checks passing **BEFORE COMMIT**
+   - Tests pass (pytest)
+   - Type checking passes (mypy)
+   - Linting passes (ruff check)
+   - Formatting clean (ruff format --check)
+   - Docs build without warnings (make html)
 
 ## Coding Standards
 
