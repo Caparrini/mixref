@@ -84,12 +84,12 @@ def analyze_spectrum(
     Example:
         >>> import numpy as np
         >>> from mixref.detective.spectral import analyze_spectrum
-        >>> 
+        >>>
         >>> # Pink noise (equal energy per octave)
         >>> sr = 44100
         >>> duration = 5
         >>> audio = np.random.randn(sr * duration) * 0.1
-        >>> 
+        >>>
         >>> result = analyze_spectrum(audio, sr)
         >>> for band in result.bands:
         ...     print(f"{band.band_name}: {band.energy_percent:.1f}%")
@@ -143,11 +143,13 @@ def analyze_spectrum(
     results = []
     for name, energy_db, energy_sq in band_energies:
         percent = (energy_sq / (total_energy + 1e-10)) * 100
-        results.append(BandEnergy(
-            band_name=name,
-            energy_db=float(energy_db),
-            energy_percent=float(percent),
-        ))
+        results.append(
+            BandEnergy(
+                band_name=name,
+                energy_db=float(energy_db),
+                energy_percent=float(percent),
+            )
+        )
 
     return SpectralResult(
         bands=results,
@@ -172,11 +174,11 @@ def compare_spectral_balance(
     Example:
         >>> from mixref.detective.spectral import analyze_spectrum, compare_spectral_balance
         >>> import numpy as np
-        >>> 
+        >>>
         >>> sr = 44100
         >>> audio1 = np.random.randn(sr * 5) * 0.1
         >>> audio2 = np.random.randn(sr * 5) * 0.1
-        >>> 
+        >>>
         >>> result1 = analyze_spectrum(audio1, sr)
         >>> result2 = analyze_spectrum(audio2, sr)
         >>> diff = compare_spectral_balance(result1, result2)
