@@ -121,7 +121,7 @@ def analyze_spectrum(
     for band in bands:
         # Find frequency bins in this band
         band_mask = (freqs >= band.min_hz) & (freqs <= band.max_hz)
-        
+
         # Calculate RMS energy in this band
         band_magnitude = magnitude[band_mask, :]
         if band_magnitude.size > 0:
@@ -132,7 +132,7 @@ def analyze_spectrum(
 
         # Convert to dB
         energy_db = 20 * np.log10(rms + 1e-10)
-        
+
         band_energies.append((band.name, energy_db, rms**2))
 
     # Calculate total RMS
