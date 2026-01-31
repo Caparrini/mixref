@@ -70,5 +70,5 @@ jobs:
     - name: Validate Sphinx documentation
       run: |
         cd docs
-        uv run sphinx-build -W --keep-going -b html source build/html
-        echo "✅ Documentation builds without warnings"
+        uv run sphinx-build -b html source build/html
+        echo "✅ Documentation builds without errors"

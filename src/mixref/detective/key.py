@@ -74,12 +74,12 @@ def detect_key(
     Example:
         >>> import numpy as np
         >>> from mixref.detective.key import detect_key
-        >>> 
+        >>>
         >>> # Generate C major-ish signal
         >>> sr = 22050
         >>> duration = 10
         >>> audio = np.sin(2 * np.pi * 261.63 * np.arange(sr * duration) / sr)
-        >>> 
+        >>>
         >>> result = detect_key(audio, sr)
         >>> print(result.key)
         C major
@@ -104,10 +104,12 @@ def detect_key(
 
     # Key profiles (major and minor templates)
     # Krumhansl-Schmuckler key profiles
-    major_profile = np.array([6.35, 2.23, 3.48, 2.33, 4.38, 4.09,
-                               2.52, 5.19, 2.39, 3.66, 2.29, 2.88])
-    minor_profile = np.array([6.33, 2.68, 3.52, 5.38, 2.60, 3.53,
-                               2.54, 4.75, 3.98, 2.69, 3.34, 3.17])
+    major_profile = np.array(
+        [6.35, 2.23, 3.48, 2.33, 4.38, 4.09, 2.52, 5.19, 2.39, 3.66, 2.29, 2.88]
+    )
+    minor_profile = np.array(
+        [6.33, 2.68, 3.52, 5.38, 2.60, 3.53, 2.54, 4.75, 3.98, 2.69, 3.34, 3.17]
+    )
 
     # Normalize profiles
     major_profile = major_profile / np.sum(major_profile)
@@ -165,7 +167,7 @@ def get_compatible_keys(key: str) -> list[str]:
 
     Example:
         >>> from mixref.detective.key import get_compatible_keys
-        >>> 
+        >>>
         >>> compatible = get_compatible_keys("8B")
         >>> print(compatible)
         ['7B', '9B', '8A']

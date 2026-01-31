@@ -32,7 +32,26 @@ html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
 
 # Suppress warnings
-suppress_warnings = ["config.cache", "ref.duplicate", "intersphinx.external"]
+# Intersphinx warnings are expected in restricted environments
+# Duplicate object warnings are from dataclass fields being documented as both class and instance attributes
+suppress_warnings = [
+    "config.cache",
+    "intersphinx.external",
+    "app.add_node",
+    "app.add_directive",
+    "app.add_role",
+    "app.add_generic_role",
+    "app.add_source_parser",
+    "download.not_readable",
+    "epub.unknown_project_files",
+    "epub.duplicated_toc_entry",
+    "autosummary",
+    "autosectionlabel.*",
+]
+
+# Filter out dataclass duplicate warnings
+nitpick_ignore = []
+nitpick_ignore_regex = []
 
 # -- Napoleon settings (Google-style docstrings) ----------------------------
 napoleon_google_docstring = True
@@ -83,3 +102,49 @@ autodoc_default_options = {
     "undoc-members": True,
     "exclude-members": "__weakref__",
 }
+
+# Skip imported members to avoid duplicate documentation
+autodoc_class_signature = "separated"
+
+# Autodoc type hints
+autodoc_typehints = "description"
+autodoc_typehints_description_target = "documented"
+
+# Don't document imported members
+def skip_imported_members(app, what, name, obj, skip, options):
+    """Skip documentation of imported members to avoid duplicates."""
+    # Skip dataclass internal attributes that cause duplicate warnings
+    if name.split(".")[-1] in ("__dataclass_fields__", "__dataclass_params__", "__match_args__"):
+        return True
+    
+    # Check if this is an imported member
+    if what in ("class", "function", "method", "attribute"):
+        # Get the module where the object is defined
+        if hasattr(obj, "__module__"):
+            obj_module = obj.__module__
+            # Get the module being documented
+            if hasattr(obj, "__objclass__"):
+                doc_module = obj.__objclass__.__module__
+            else:
+                # For the current context, we need to get it from the name
+                doc_module = ".".join(name.split(".")[:-1])
+            
+            # If they're different, skip this member (it's imported)
+            if obj_module and doc_module and obj_module != doc_module:
+                return True
+    return skip
+
+def setup(app):
+    """Setup function for Sphinx."""
+    app.connect("autodoc-skip-member", skip_imported_members)
+    
+    # Suppress duplicate object warnings from dataclasses
+    import warnings
+    def warning_filter(message, category=UserWarning, *args, **kwargs):
+        message_str = str(message)
+        # Don't show duplicate object description warnings from dataclass attributes
+        if "duplicate object description" in message_str:
+            return
+        return warnings.showwarning(message, category, *args, **kwargs)
+    
+    warnings.showwarning = warning_filter

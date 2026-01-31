@@ -172,17 +172,17 @@ class TestCompareSpectralBalance:
         diff = compare_spectral_balance(result, result)
 
         # All differences should be ~0
-        for band_name, difference in diff.items():
+        for _band_name, difference in diff.items():
             assert abs(difference) < 0.01
 
     def test_compare_spectral_balance_different(self):
         """Test comparing different signals."""
         sr = 22050
         duration = 3
-        
+
         # One signal
         audio1 = np.random.randn(sr * duration) * 0.1
-        
+
         # Different signal
         audio2 = np.random.randn(sr * duration) * 0.2  # Louder
 
