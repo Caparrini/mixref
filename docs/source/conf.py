@@ -6,11 +6,14 @@ import sys
 # Add src to path for autodoc
 sys.path.insert(0, os.path.abspath("../../src"))
 
+# Import version from package
+from mixref import __version__
+
 # -- Project information -----------------------------------------------------
 project = "mixref"
 copyright = "2026, mixref"
 author = "mixref"
-release = "0.1.0"
+release = __version__
 
 # -- General configuration ---------------------------------------------------
 extensions = [
@@ -29,7 +32,7 @@ html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
 
 # Suppress warnings
-suppress_warnings = ["config.cache"]
+suppress_warnings = ["config.cache", "ref.duplicate", "intersphinx.external"]
 
 # -- Napoleon settings (Google-style docstrings) ----------------------------
 napoleon_google_docstring = True
@@ -68,6 +71,9 @@ intersphinx_mapping = {
     "numpy": ("https://numpy.org/doc/stable/", None),
     "librosa": ("https://librosa.org/doc/latest/", None),
 }
+
+# Set a reasonable timeout for intersphinx to avoid long waits
+intersphinx_timeout = 5
 
 # -- Autodoc configuration ---------------------------------------------------
 autodoc_default_options = {
