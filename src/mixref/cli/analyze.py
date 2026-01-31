@@ -11,6 +11,13 @@ from rich.console import Console
 from rich.table import Table
 
 from mixref.audio import load_audio
+from mixref.detective import (
+    CorrectedBPM,
+    TempoResult,
+    correct_bpm,
+    detect_bpm,
+)
+from mixref.detective import Genre as DetectiveGenre
 from mixref.meters import (
     Genre,
     LoudnessResult,
@@ -85,11 +92,35 @@ def analyze_command(
             console.print("[dim]Calculating loudness...[/dim]")
         result = calculate_lufs(audio, sr)
 
+        # Detect BPM
+        if not json_output:
+            console.print("[dim]Detecting tempo...[/dim]")
+        # Convert back to (samples, channels) for BPM detection
+        bpm_audio = audio.T if audio.ndim == 2 else audio
+        tempo_result = detect_bpm(bpm_audio, sr)
+
+        # Apply genre-aware correction if genre specified
+        bpm_result: CorrectedBPM | TempoResult = tempo_result
+        if genre:
+            # Map meters.Genre to detective.Genre
+            detective_genre_map = {
+                Genre.DNB: DetectiveGenre.DNB,
+                Genre.TECHNO: DetectiveGenre.TECHNO,
+                Genre.HOUSE: DetectiveGenre.HOUSE,
+                Genre.DUBSTEP: DetectiveGenre.DUBSTEP,
+                Genre.TRANCE: DetectiveGenre.TRANCE,
+            }
+            if genre in detective_genre_map:
+                bpm_result = correct_bpm(
+                    tempo_result.bpm,
+                    detective_genre_map[genre]
+                )
+
         # Display results
         if json_output:
-            _display_json(file, result, platform, genre)
+            _display_json(file, result, bpm_result, platform, genre)
         else:
-            _display_table(file, result, platform, genre)
+            _display_table(file, result, bpm_result, platform, genre)
 
     except Exception as e:
         console.print(f"[red]Error analyzing file: {e}[/red]")
@@ -99,6 +130,7 @@ def analyze_command(
 def _display_table(
     file: Path,
     result: LoudnessResult,
+    bpm_result: CorrectedBPM | TempoResult,
     platform: Platform | None,
     genre: Genre | None,
 ) -> None:
@@ -107,6 +139,7 @@ def _display_table(
     Args:
         file: Audio file path
         result: LoudnessResult from calculate_lufs
+        bpm_result: BPM detection result (TempoResult or CorrectedBPM)
         platform: Platform target (optional)
         genre: Genre target (optional)
     """
@@ -128,6 +161,23 @@ def _display_table(
     # LRA
     lra_str = f"{result.loudness_range_lu:.1f} LU"
     table.add_row("Loudness Range", lra_str, "ℹ️")
+
+    # Separator
+    table.add_section()
+
+    # BPM
+    if isinstance(bpm_result, CorrectedBPM):
+        bpm_str = f"{bpm_result.corrected_bpm:.1f} BPM"
+        bpm_status = "🎵"
+        if bpm_result.was_corrected:
+            bpm_status = "🔧"  # Was corrected
+        if bpm_result.in_genre_range is not None and not bpm_result.in_genre_range:
+            bpm_status = "⚠️"  # Outside genre range
+    else:
+        bpm_str = f"{bpm_result.bpm:.1f} BPM"
+        bpm_status = "🎵" if bpm_result.confidence > 0.7 else "❓"
+
+    table.add_row("Tempo", bpm_str, bpm_status)
 
     console.print(table)
 
@@ -203,6 +253,7 @@ def _peak_status(peak: float) -> str:
 def _display_json(
     file: Path,
     result: LoudnessResult,
+    bpm_result: CorrectedBPM | TempoResult,
     platform: Platform | None,
     genre: Genre | None,
 ) -> None:
@@ -211,6 +262,7 @@ def _display_json(
     Args:
         file: Audio file path
         result: LoudnessResult from calculate_lufs
+        bpm_result: BPM detection result (TempoResult or CorrectedBPM)
         platform: Platform target (optional)
         genre: Genre target (optional)
     """
@@ -225,7 +277,23 @@ def _display_json(
             "short_term_max_lufs": round(result.short_term_max_lufs, 2),
             "short_term_min_lufs": round(result.short_term_min_lufs, 2),
         },
+        "tempo": {},
     }
+
+    # Add BPM info
+    if isinstance(bpm_result, CorrectedBPM):
+        output["tempo"] = {
+            "bpm": round(bpm_result.corrected_bpm, 1),
+            "original_bpm": round(bpm_result.original_bpm, 1),
+            "was_corrected": bpm_result.was_corrected,
+            "in_genre_range": bpm_result.in_genre_range,
+            "genre": bpm_result.genre.value if bpm_result.genre else None,
+        }
+    else:
+        output["tempo"] = {
+            "bpm": round(bpm_result.bpm, 1),
+            "confidence": round(bpm_result.confidence, 2),
+        }
 
     # Add platform comparison
     if platform:
