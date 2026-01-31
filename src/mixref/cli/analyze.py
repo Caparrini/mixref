@@ -14,7 +14,9 @@ from mixref.audio import load_audio
 from mixref.detective import (
     CorrectedBPM,
     KeyResult,
+    SpectralResult,
     TempoResult,
+    analyze_spectrum,
     correct_bpm,
     detect_bpm,
     detect_key,
@@ -123,11 +125,16 @@ def analyze_command(
             console.print("[dim]Detecting key...[/dim]")
         key_result = detect_key(bpm_audio, sr)
 
+        # Analyze spectral balance
+        if not json_output:
+            console.print("[dim]Analyzing frequency balance...[/dim]")
+        spectral_result = analyze_spectrum(bpm_audio, sr)
+
         # Display results
         if json_output:
-            _display_json(file, result, bpm_result, key_result, platform, genre)
+            _display_json(file, result, bpm_result, key_result, spectral_result, platform, genre)
         else:
-            _display_table(file, result, bpm_result, key_result, platform, genre)
+            _display_table(file, result, bpm_result, key_result, spectral_result, platform, genre)
 
     except Exception as e:
         console.print(f"[red]Error analyzing file: {e}[/red]")
@@ -139,6 +146,7 @@ def _display_table(
     result: LoudnessResult,
     bpm_result: CorrectedBPM | TempoResult,
     key_result: KeyResult,
+    spectral_result: SpectralResult,
     platform: Platform | None,
     genre: Genre | None,
 ) -> None:
@@ -149,6 +157,7 @@ def _display_table(
         result: LoudnessResult from calculate_lufs
         bpm_result: BPM detection result (TempoResult or CorrectedBPM)
         key_result: Key detection result
+        spectral_result: Spectral analysis result
         platform: Platform target (optional)
         genre: Genre target (optional)
     """
@@ -192,6 +201,32 @@ def _display_table(
     key_str = f"{key_result.key} ({key_result.camelot})"
     key_status = "🎹" if key_result.confidence > 0.6 else "❓"
     table.add_row("Key", key_str, key_status)
+
+    # Separator for spectral section
+    table.add_section()
+
+    # Spectral Balance - Show as visual bars
+    for band_energy in spectral_result.bands:
+        # Normalize percentage to 10-point scale for visual bars
+        bar_length = int(band_energy.energy_percent / 10)
+        bar = "■" * bar_length + "□" * (10 - bar_length)
+
+        # Add color based on frequency range
+        band_name_upper = band_energy.band_name.upper()
+        if band_name_upper == "SUB":
+            bar_colored = f"[magenta]{bar}[/magenta]"
+        elif band_name_upper == "LOW":
+            bar_colored = f"[blue]{bar}[/blue]"
+        elif band_name_upper == "MID":
+            bar_colored = f"[green]{bar}[/green]"
+        elif band_name_upper == "HIGH":
+            bar_colored = f"[yellow]{bar}[/yellow]"
+        else:  # AIR
+            bar_colored = f"[cyan]{bar}[/cyan]"
+
+        band_label = f"{band_energy.band_name}"
+        percentage_str = f"{band_energy.energy_percent:.1f}%"
+        table.add_row(band_label, bar_colored, percentage_str)
 
     console.print(table)
 
@@ -269,6 +304,7 @@ def _display_json(
     result: LoudnessResult,
     bpm_result: CorrectedBPM | TempoResult,
     key_result: KeyResult,
+    spectral_result: SpectralResult,
     platform: Platform | None,
     genre: Genre | None,
 ) -> None:
@@ -279,6 +315,7 @@ def _display_json(
         result: LoudnessResult from calculate_lufs
         bpm_result: BPM detection result (TempoResult or CorrectedBPM)
         key_result: Key detection result
+        spectral_result: Spectral analysis result
         platform: Platform target (optional)
         genre: Genre target (optional)
     """
@@ -316,6 +353,19 @@ def _display_json(
         "key": key_result.key,
         "camelot": key_result.camelot,
         "confidence": round(key_result.confidence, 2),
+    }
+
+    # Add spectral analysis
+    output["spectral"] = {
+        "bands": [
+            {
+                "name": band.band_name.lower(),
+                "energy_db": round(band.energy_db, 2),
+                "energy_percent": round(band.energy_percent, 2),
+            }
+            for band in spectral_result.bands
+        ],
+        "total_energy_db": round(spectral_result.total_energy_db, 2),
     }
 
     # Add platform comparison
