@@ -119,3 +119,4 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*" = ["B018"]
+"src/mixref/cli/**/*" = ["B008"]  # Typer uses function calls in defaults (intentional)
