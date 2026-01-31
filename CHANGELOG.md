@@ -5,6 +5,95 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-01-31
+
+### Added
+
+#### 🎵 BPM Detection (Phase 5)
+- **Tempo detection integrated into `mixref analyze`**
+  - Automatic BPM detection using librosa beat tracking
+  - Confidence scoring based on rhythmic consistency
+  - **Genre-aware BPM correction** - automatically detects and fixes half-time issues
+    - Doubles BPM if detected below 100 (common issue in electronic music)
+    - Validates against genre-specific ranges when `--genre` flag used
+  - Visual status indicators in output:
+    - 🎵 Normal detection
+    - 🔧 BPM was corrected (doubled from half-time)
+    - ⚠️ Outside expected genre range
+  - Genre BPM ranges:
+    - DnB: 160-180 BPM (typical: 174)
+    - Techno: 120-140 BPM (typical: 130)
+    - House: 118-128 BPM (typical: 124)
+    - Dubstep: 135-145 BPM (typical: 140)
+    - Trance: 125-145 BPM (typical: 138)
+  - Included in JSON output with correction metadata
+
+#### 🎹 Musical Key Detection (Phase 6)
+- **Key detection integrated into `mixref analyze`**
+  - Chroma-based key detection using Krumhansl-Schmuckler profiles
+  - **Camelot wheel notation for DJs** - Shows both traditional (e.g., "Eb minor") and Camelot code (e.g., "8A")
+  - Compatible key suggestions for harmonic mixing
+  - Prefers flat notation (Eb not D#) per electronic music conventions
+  - Confidence scoring for key detection quality
+  - Visual status indicators:
+    - 🎹 High confidence detection (>60%)
+    - ❓ Low confidence - key may be ambiguous
+  - Included in JSON output with confidence scores
+
+#### 📊 Spectral Analysis (Phase 7)
+- **Frequency band analysis integrated into `mixref analyze`**
+  - 5 production-focused frequency bands analyzed:
+    - **Sub** (20-60Hz) - Magenta bars 🟣
+    - **Low** (60-250Hz) - Blue bars 🔵
+    - **Mid** (250-2kHz) - Green bars 🟢
+    - **High** (2-8kHz) - Yellow bars 🟡
+    - **Air** (8-20kHz) - Cyan bars 🔷
+  - **Visual energy bars** in Rich table output showing relative energy per band
+  - Energy displayed as both dB and percentage of total
+  - STFT-based analysis for accurate frequency measurement
+  - Spectral comparison function for A/B reference comparison (foundation for Phase 8)
+  - Included in JSON output with per-band energy data
+
+#### 📈 Enhanced Analyze Command
+- **Complete production analysis in one command**:
+  ```bash
+  mixref analyze track.wav --platform spotify --genre dnb
+  ```
+  Now shows:
+  - ✅ Loudness (LUFS, True Peak, LRA)
+  - ✅ **Tempo (BPM with genre validation)**
+  - ✅ **Musical Key (with Camelot code)**
+  - ✅ **5 Frequency Bands (visual bars)**
+  - ✅ Platform comparison
+  - ✅ Genre comparison
+
+- **JSON output includes all detective data**:
+  - `tempo` object with BPM, confidence, correction info
+  - `key` object with musical key, Camelot code, confidence
+  - `spectral` object with 5 band energies and percentages
+
+### Testing
+- **136 total tests** (up from 75 in v0.2.0)
+  - +10 tempo detection tests
+  - +22 BPM correction tests  
+  - +14 key detection tests
+  - +15 spectral analysis tests
+  - 12 CLI integration tests (updated for new features)
+- **All tests passing** with comprehensive coverage
+- Synthetic audio generation for all detective module tests
+
+### Technical Improvements
+- Genre enum mapping between `meters.Genre` and `detective.Genre`
+- Audio shape handling for different analysis functions
+- Efficient STFT-based spectral analysis
+- Krumhansl-Schmuckler key profiles implementation
+- Onset strength-based BPM confidence scoring
+
+### Documentation
+- Sphinx-Gallery example for BPM detection
+- Complete API documentation for all detective modules
+- Updated analyze command examples showing new features
+
 ## [0.2.0] - 2026-01-30
 
 ### Added
