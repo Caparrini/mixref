@@ -6,7 +6,6 @@ helping detect half-time issues common in electronic music.
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
 
 
 class Genre(str, Enum):
@@ -60,14 +59,14 @@ class CorrectedBPM:
     original_bpm: float
     corrected_bpm: float
     was_corrected: bool
-    correction_reason: Optional[str] = None
-    in_genre_range: Optional[bool] = None
-    genre: Optional[Genre] = None
+    correction_reason: str | None = None
+    in_genre_range: bool | None = None
+    genre: Genre | None = None
 
 
 def correct_bpm(
     bpm: float,
-    genre: Optional[Genre] = None,
+    genre: Genre | None = None,
     half_time_threshold: float = 100.0,
 ) -> CorrectedBPM:
     """Apply genre-aware BPM corrections.
@@ -110,9 +109,7 @@ def correct_bpm(
     if bpm < half_time_threshold:
         corrected_bpm = bpm * 2.0
         was_corrected = True
-        correction_reason = (
-            f"Detected half-time: {bpm:.1f} BPM doubled to {corrected_bpm:.1f} BPM"
-        )
+        correction_reason = f"Detected half-time: {bpm:.1f} BPM doubled to {corrected_bpm:.1f} BPM"
 
     # Validate against genre range if provided
     if genre is not None:

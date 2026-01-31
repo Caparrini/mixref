@@ -8,6 +8,7 @@ from mixref.detective.bpm_correction import (
     get_genre_range,
     is_in_genre_range,
 )
+from mixref.detective.key import KeyResult, detect_key, get_compatible_keys
 from mixref.detective.tempo import TempoResult, detect_bpm
 
 __all__ = [
@@ -19,4 +20,7 @@ __all__ = [
     "BPMRange",
     "get_genre_range",
     "is_in_genre_range",
+    "detect_key",
+    "KeyResult",
+    "get_compatible_keys",
 ]

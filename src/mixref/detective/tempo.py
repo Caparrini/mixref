@@ -96,9 +96,7 @@ def detect_bpm(
         audio_mono = audio
 
     # Compute onset strength envelope
-    onset_env = librosa.onset.onset_strength(
-        y=audio_mono, sr=sample_rate, aggregate=np.median
-    )
+    onset_env = librosa.onset.onset_strength(y=audio_mono, sr=sample_rate, aggregate=np.median)
 
     # Detect tempo using autocorrelation
     tempo, beats = librosa.beat.beat_track(

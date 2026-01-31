@@ -1,7 +1,5 @@
 """Tests for BPM correction and genre validation."""
 
-import pytest
-
 from mixref.detective.bpm_correction import (
     BPMRange,
     CorrectedBPM,
