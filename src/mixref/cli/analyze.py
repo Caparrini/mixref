@@ -13,9 +13,11 @@ from rich.table import Table
 from mixref.audio import load_audio
 from mixref.detective import (
     CorrectedBPM,
+    KeyResult,
     TempoResult,
     correct_bpm,
     detect_bpm,
+    detect_key,
 )
 from mixref.detective import Genre as DetectiveGenre
 from mixref.meters import (
@@ -116,11 +118,16 @@ def analyze_command(
                     detective_genre_map[genre]
                 )
 
+        # Detect musical key
+        if not json_output:
+            console.print("[dim]Detecting key...[/dim]")
+        key_result = detect_key(bpm_audio, sr)
+
         # Display results
         if json_output:
-            _display_json(file, result, bpm_result, platform, genre)
+            _display_json(file, result, bpm_result, key_result, platform, genre)
         else:
-            _display_table(file, result, bpm_result, platform, genre)
+            _display_table(file, result, bpm_result, key_result, platform, genre)
 
     except Exception as e:
         console.print(f"[red]Error analyzing file: {e}[/red]")
@@ -131,6 +138,7 @@ def _display_table(
     file: Path,
     result: LoudnessResult,
     bpm_result: CorrectedBPM | TempoResult,
+    key_result: KeyResult,
     platform: Platform | None,
     genre: Genre | None,
 ) -> None:
@@ -140,6 +148,7 @@ def _display_table(
         file: Audio file path
         result: LoudnessResult from calculate_lufs
         bpm_result: BPM detection result (TempoResult or CorrectedBPM)
+        key_result: Key detection result
         platform: Platform target (optional)
         genre: Genre target (optional)
     """
@@ -178,6 +187,11 @@ def _display_table(
         bpm_status = "🎵" if bpm_result.confidence > 0.7 else "❓"
 
     table.add_row("Tempo", bpm_str, bpm_status)
+
+    # Musical Key
+    key_str = f"{key_result.key} ({key_result.camelot})"
+    key_status = "🎹" if key_result.confidence > 0.6 else "❓"
+    table.add_row("Key", key_str, key_status)
 
     console.print(table)
 
@@ -254,6 +268,7 @@ def _display_json(
     file: Path,
     result: LoudnessResult,
     bpm_result: CorrectedBPM | TempoResult,
+    key_result: KeyResult,
     platform: Platform | None,
     genre: Genre | None,
 ) -> None:
@@ -263,6 +278,7 @@ def _display_json(
         file: Audio file path
         result: LoudnessResult from calculate_lufs
         bpm_result: BPM detection result (TempoResult or CorrectedBPM)
+        key_result: Key detection result
         platform: Platform target (optional)
         genre: Genre target (optional)
     """
@@ -294,6 +310,13 @@ def _display_json(
             "bpm": round(bpm_result.bpm, 1),
             "confidence": round(bpm_result.confidence, 2),
         }
+
+    # Add key detection
+    output["key"] = {
+        "key": key_result.key,
+        "camelot": key_result.camelot,
+        "confidence": round(key_result.confidence, 2),
+    }
 
     # Add platform comparison
     if platform:
