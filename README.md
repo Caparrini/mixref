@@ -11,26 +11,43 @@
 
 CLI Audio Analyzer for Music Producers
 
-> **Status**: v0.1.0 Published! 🎉
+> **Status**: v0.3.0 - Feature Complete! 🎉
 
-A sharp, opinionated audio analysis tool that speaks the language of producers. Focused on electronic music (Drum & Bass, Techno, House) with genre-aware insights.
+A sharp, opinionated audio analysis tool that speaks the language of producers. Not another generic analyzer—built specifically for electronic music (Drum & Bass, Techno, House) with genre-aware insights that matter.
 
 ## Features
 
-### Available Now (v0.1.0)
+### 🎚️ Professional Loudness Analysis
 
-- 📂 **Audio Loading**: WAV, FLAC, MP3, OGG, AIFF support
-- 🔄 **Format Conversion**: Automatic mono/stereo conversion
-- ⚡ **Resampling**: Convert to any target sample rate
-- 🛡️ **Error Handling**: Robust error messages for common issues
+- **EBU R128 Metering**: Integrated LUFS, True Peak (dBTP), Loudness Range (LRA)
+- **Platform Targets**: Spotify (-14), YouTube (-14), Apple Music (-16), Club (-6 to -8)
+- **Genre Awareness**: DnB, Techno, House, Dubstep, Trance profiles
+- **Real-time Warnings**: Clipping detection, loudness guidance
 
-### Coming Soon
+### 🎵 Musical Analysis
 
-- 🎚️ **LUFS Metering**: EBU R128 loudness with platform-specific targets
-- 🎵 **BPM & Key Detection**: Genre-aware tempo and key analysis with Camelot notation
-- 📊 **Spectral Analysis**: Frequency band breakdown for mixing decisions
-- 🔄 **A/B Comparison**: Compare your mix against professional references
-- 🎯 **Smart Suggestions**: Actionable feedback based on genre best practices
+- **BPM Detection**: Genre-aware tempo detection with half-time correction
+- **Key Detection**: Krumhansl-Schmuckler algorithm with Camelot notation (8A, 5B, etc.)
+- **Confidence Scores**: Know how reliable the detection is
+
+### 📊 Spectral Analysis
+
+- **5-Band Breakdown**: Sub (20-60Hz), Low (60-250Hz), Mid (250-2kHz), High (2-8kHz), Air (8-20kHz)
+- **Visual Bars**: See your frequency balance at a glance
+- **Percentage Distribution**: Understand where your energy sits
+
+### 🔄 A/B Comparison
+
+- **Reference Matching**: Compare your mix against professional tracks
+- **Side-by-Side Analysis**: Loudness, spectral, BPM, and key comparison
+- **Smart Suggestions**: Get actionable feedback on what to adjust
+- **Difference Highlighting**: See exactly where you differ (> 3% significance threshold)
+
+### 📤 Flexible Output
+
+- **Rich CLI Tables**: Beautiful terminal output with colors and formatting
+- **JSON Export**: Perfect for scripting and automation
+- **Multiple Formats**: WAV, FLAC, MP3, OGG, AIFF support
 
 ## Installation
 
@@ -51,18 +68,26 @@ uv pip install mixref
 
 ## Quick Start
 
+### Python API
+
 ```python
 from mixref.audio import load_audio
+from mixref.meters import calculate_lufs
+from mixref.detective import detect_tempo, detect_key
 
-# Load an audio file
-audio, sample_rate = load_audio("your_track.wav")
+# Load and analyze
+audio, sr = load_audio("your_track.wav")
 
-# With options
-audio, sr = load_audio(
-    "track.wav",
-    channel_mode="stereo",  # Force stereo output
-    sample_rate=44100       # Resample to 44.1kHz
-)
+# Get loudness metrics
+result = calculate_lufs(audio, sr)
+print(f"LUFS: {result.lufs_integrated}")
+print(f"True Peak: {result.true_peak_dbtp}")
+
+# Detect BPM and key
+bpm = detect_tempo(audio, sr)
+key = detect_key(audio, sr)
+print(f"Tempo: {bpm.bpm} BPM")
+print(f"Key: {key.key_name} ({key.camelot_code})")
 ```
 
 ### CLI Usage
@@ -71,12 +96,59 @@ audio, sr = load_audio(
 # Check version
 mixref --version
 
-# Get help
-mixref --help
+# Analyze a track
+mixref analyze my_track.wav
 
-# Coming soon: Analysis commands
-# mixref analyze my_track.wav --genre dnb
-# mixref compare my_mix.wav reference.wav
+# With platform target
+mixref analyze track.wav --platform spotify
+
+# With genre awareness
+mixref analyze dnb_track.wav --genre dnb
+
+# JSON output for scripting
+mixref analyze track.wav --json | jq '.lufs.integrated'
+
+# Compare your mix to a reference
+mixref compare my_mix.wav professional_reference.wav
+
+# Full comparison with BPM and key
+mixref compare my_track.wav reference.wav --bpm --key
+
+# Compare with JSON output
+mixref compare track1.wav track2.wav --json
+```
+
+## Real-World Example
+
+```bash
+$ mixref analyze neurofunk_banger.wav --genre dnb
+
+             Analysis: neurofunk_banger.wav             
+┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━┓
+┃ Metric              ┃        Value ┃ Status ┃
+┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━┩
+│ Integrated Loudness │    -6.2 LUFS │   🔴   │
+│ True Peak           │    -0.8 dBTP │   ⚠️   │
+│ Loudness Range      │       5.2 LU │   ℹ    │
+├─────────────────────┼──────────────┼────────┤
+│ Tempo               │    174.0 BPM │   ❓   │
+│ Key                 │ F minor (4A) │   ❓   │
+├─────────────────────┼──────────────┼────────┤
+│ Sub                 │   ■■■■■■■□□□ │ 35.2%  │
+│ Low                 │   ■■■■■■■■■□ │ 28.4%  │
+│ Mid                 │   ■■■■□□□□□□ │ 18.1%  │
+│ High                │   ■■■■■■□□□□ │ 14.2%  │
+│ Air                 │   ■□□□□□□□□□ │  4.1%  │
+└─────────────────────┴──────────────┴────────┘
+
+⚠️  Platform Targets
+  • Spotify (-14):      🔴 +7.8 dB too loud
+  • YouTube (-14):      🔴 +7.8 dB too loud
+  • Club/DJ:            🟢 OK for club play
+
+💡 Genre Insights (DnB)
+  • Sub-bass is strong (35%) - typical for neurofunk
+  • True peak close to 0dB - consider -1dB headroom
 ```
 
 ## Documentation
