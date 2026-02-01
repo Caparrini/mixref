@@ -3,10 +3,10 @@
 from pathlib import Path
 
 import pytest
+from synthetic_audio import generate_sine_wave
 from typer.testing import CliRunner
 
 from mixref.cli.main import app
-from synthetic_audio import generate_pink_noise, generate_sine_wave
 
 runner = CliRunner()
 
