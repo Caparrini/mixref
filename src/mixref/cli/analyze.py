@@ -161,8 +161,8 @@ def _display_table(
     # Main results table
     table = Table(title=f"Analysis: {file.name}", show_header=True, header_style="bold")
     table.add_column("Metric", style="cyan")
-    table.add_column("Value", justify="right")
-    table.add_column("Status", justify="center")
+    table.add_column("Value", justify="right", min_width=12)
+    table.add_column("Status", justify="center", min_width=6)  # Fix emoji width issues
 
     # Integrated LUFS
     lufs_str = f"{result.integrated_lufs:.1f} LUFS"
@@ -175,7 +175,7 @@ def _display_table(
 
     # LRA
     lra_str = f"{result.loudness_range_lu:.1f} LU"
-    table.add_row("Loudness Range", lra_str, "ℹ️")
+    table.add_row("Loudness Range", lra_str, "ℹ")
 
     # Separator
     table.add_section()
