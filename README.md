@@ -11,7 +11,7 @@
 
 CLI Audio Analyzer for Music Producers
 
-> **Status**: v0.3.0 - Feature Complete! 🎉
+> **Status**: v0.4.0 - Feature Complete! 🎉
 
 A sharp, opinionated audio analysis tool that speaks the language of producers. Not another generic analyzer—built specifically for electronic music (Drum & Bass, Techno, House) with genre-aware insights that matter.
 

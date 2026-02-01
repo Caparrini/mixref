@@ -1,6 +1,6 @@
 [project]
 name = "mixref"
-version = "0.3.0"
+version = "0.4.0"
 description = "CLI Audio Analyzer for Music Producers - DnB, Techno, House"
 authors = [
     { name = "mixref", email = "dev@mixref.audio" }

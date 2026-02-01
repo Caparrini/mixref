@@ -5,6 +5,57 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-02-01
+
+### Added
+
+#### 🔄 A/B Comparison Feature
+- **New `mixref compare` command** for side-by-side track analysis
+  - Compare your mix against professional references
+  - Loudness comparison (LUFS, True Peak, LRA)
+  - Spectral balance comparison across 5 frequency bands
+  - Optional BPM and key comparison with `--bpm` and `--key` flags
+  - Smart significance thresholds (3% for spectral differences)
+  - Visual diff indicators: 🔺 higher, 🔻 lower, ✅ match, ⚠️ warning
+  - Actionable suggestions based on differences
+  - JSON output support for scripting
+- **Comparison engine** (`src/mixref/compare/`)
+  - `compare_loudness()` - LUFS and dynamic range comparison
+  - `compare_spectral()` - Frequency band analysis with significance detection
+  - `compare_tracks()` - Unified comparison with optional features
+  - Comprehensive test coverage (100% for comparison module)
+
+#### 📚 Documentation Improvements
+- **Updated README to v0.3.0+ features**
+  - Replaced "Coming Soon" with actual implemented features
+  - Added real CLI usage examples for all commands
+  - Python API examples showcasing all modules
+  - Real-world output examples
+- **Live terminal demos**
+  - SVG animations showing `analyze` and `compare` in action
+  - Created with termtosvg for authentic terminal experience
+  - Embedded directly in README for better UX
+  - Reproducible demo scripts included
+
+### Fixed
+
+#### 🐛 Critical Bug Fixes
+- **Fixed stereo-to-mono conversion in BPM and key detection**
+  - Issue: `np.mean(audio, axis=0)` with (samples, channels) produced only 2 samples
+  - Root cause: Mismatch between `load_audio()` format and detector expectations
+  - Solution: Intelligent format detection based on array shape
+  - Symptom: BPM was returning 0.0, key detection unreliable
+  - Impact: BPM and key detection now work correctly with real audio files
+- **Fixed table alignment in CLI output**
+  - Issue: Emoji variation selectors caused misaligned pipes
+  - Changed ℹ️ (2 chars) to ℹ (1 char) for consistency with 🔴 and ❓
+  - Added `min_width` to Value and Status columns
+  - All table pipes now perfectly aligned
+
+### Changed
+- Analysis output now uses consistent single-character emojis
+- Improved warning messages with specific feedback
+
 ## [0.3.0] - 2026-01-31
 
 ### Added
