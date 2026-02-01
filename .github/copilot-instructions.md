@@ -1,9 +1,9 @@
 # mixref Developer Companion
 
 **Project**: mixref – CLI Audio Analyzer for Music Producers  
-**Focus**: Electronic Music, Drum & Bass, Techno  
-**Status**: Active Development  
-**Last Updated**: 2026-01-31
+**Focus**: Electronic Music, Drum & Bass, Techno, House  
+**Status**: v0.3.0 Active Development  
+**Last Updated**: 2026-02-01
 
 ---
 
@@ -70,285 +70,371 @@ A sharp, opinionated audio tool that speaks the language of producers. Not anoth
 
 ---
 
-## 🛠️ BUILD SPECS
+## 🛠️ BUILD, TEST, LINT
 
-### Core Stack
-```
-Python 3.12+
-uv for dependency wrangling
-Typer + Rich = beautiful CLI
-Audio: librosa, pyloudnorm, soundfile
+### Essential Commands
+```bash
+# Setup
+uv sync --all-extras              # Install all dependencies (dev + docs)
+
+# Testing
+uv run pytest                      # Run all tests
+uv run pytest tests/test_tempo.py  # Run single test file
+uv run pytest -k test_bpm_detection # Run tests matching pattern
+uv run pytest --cov=src/mixref --cov-report=term-missing  # With coverage
+
+# Type Checking
+uv run mypy src/                   # Type check source code
+
+# Linting & Formatting
+uv run ruff check src/ tests/      # Lint code
+uv run ruff format src/ tests/     # Format code
+uv run ruff format --check src/    # Check formatting without changes
+
+# Documentation
+cd docs && uv run sphinx-build -W -b html source build/html
+
+# Run the CLI locally
+uv run mixref --help
+uv run mixref analyze path/to/audio.wav
 ```
 
-### Directory Blueprint
-```
-mixref/
-├── src/mixref/
-│   ├── cli/           # Command definitions
-│   ├── audio/         # Raw audio handling
-│   ├── meters/        # LUFS, peaks, LRA
-│   ├── detective/     # BPM, key, spectral
-│   └── compare/       # A/B comparison engine
-├── tests/
-│   └── synthetic_audio.py  # Fake tracks for testing
-└── pyproject.toml
-```
+### Quality Requirements
+- **Coverage**: 85%+ (enforced in CI)
+- **Type checking**: Strict mode, all functions typed
+- **Formatting**: Ruff (line length: 100)
+- **Python**: 3.12+ (3.13 on Windows has numpy issues)
 
 ---
 
-## 🔊 AUDIO PHILOSOPHY
+## 🏗️ ARCHITECTURE
 
-### Loudness Rules
-- **Streaming**: -14 LUFS (play nice with platforms)
-- **Club/DnB**: -8 to -6 LUFS (when you need to slap)
-- **True Peak**: Never clip above -1.0 dBTP
-- **LRA**: < 8LU for compressed genres, > 12LU for dynamic
+### Module Organization
+```
+src/mixref/
+├── audio/          # Audio I/O layer
+│   ├── loader.py       # File loading (WAV/FLAC/MP3/OGG/AIFF)
+│   ├── validation.py   # Format/integrity checks
+│   └── exceptions.py   # Custom audio errors
+│
+├── detective/      # Feature extraction
+│   ├── tempo.py           # BPM detection (librosa beat tracking)
+│   ├── bpm_correction.py  # Genre-aware BPM validation
+│   ├── key.py             # Musical key + Camelot codes
+│   └── spectral.py        # Frequency band analysis
+│
+├── meters/         # Loudness metering
+│   ├── loudness.py   # EBU R128 LUFS (pyloudnorm)
+│   └── targets.py    # Platform targets (Spotify/YouTube/Club)
+│
+├── compare/        # A/B comparison
+│   └── engine.py   # Track comparison logic
+│
+└── cli/            # User interface
+    ├── main.py      # Typer app entry point
+    ├── analyze.py   # analyze command
+    └── compare.py   # compare command
+```
 
-### BPM Detection
-Electronic music cheat codes:
-- If BPM < 100 → probably half-time detection → double it
-- DnB range: 160-180 BPM
-- Techno range: 120-140 BPM
-- House range: 118-128 BPM
+### Data Flow Pattern
+1. **Load**: `audio.loader.load_audio()` → numpy array + sample rate
+2. **Detect**: `detective.*` modules extract features (BPM, key, spectral)
+3. **Measure**: `meters.*` calculate loudness metrics
+4. **Compare**: `compare.*` performs A/B analysis (optional)
+5. **Present**: `cli.*` formats output with Rich tables
 
-### Key Notation
-- **Prefer flats**: Eb minor, not D# minor
-- **Camelot codes**: 8A, 5B, etc. (DJs love this)
-- **Confidence score**: Show how sure we are
+### Key Design Decisions
+- **Mono conversion for analysis**: Multi-channel audio converted to mono for tempo/key detection (keeps stereo for loudness)
+- **Lazy imports**: Heavy dependencies (librosa) only loaded when needed
+- **Dataclasses for results**: Type-safe, immutable analysis results
+- **Rich for output**: Terminal-first UX with colors and tables
 
 ---
 
-## ⌨️ CLI PERSONALITY
+## 📝 CODE CONVENTIONS
 
-### Commands Structure
-```
-mixref analyze <file> [--genre dnb|techno|house]
-mixref compare <my_track> <reference> [--focus bass|highs|mids]
-mixref shootout <folder>  # Batch compare multiple tracks
-```
-
-### Output Vibe
-- Clean Rich tables with subtle colors
-- Warning messages in yellow with specific suggestions
-- Progress bars for anything taking > 2 seconds
-- JSON output available but not the default
-
-### Exit Codes
-```
-0 = Everything's perfect
-1 = Something broke (file error, etc.)
-2 = Warning (clipping detected, but analysis complete)
-3 = You used it wrong (invalid args)
-```
-
----
-
-## 🧠 COPILOT CONVERSATION GUIDE
-
-### When Starting New Feature
-```
-"Create a function that loads WAV files and handles mono/stereo conversion.
-Use soundfile for reading, return numpy array and sample rate.
-Include error handling for corrupt files."
-```
-
-### For Audio Processing Logic
-```
-"Implement EBU R128 loudness measurement using pyloudnorm.
-Meter should be K-weighted, include integrated LUFS and true peak.
-Add option for genre-specific targets."
-```
-
-### For CLI Polish
-```
-"Make a Rich table showing frequency band comparison.
-Left column: my track, right column: reference.
-Highlight differences > 3dB in yellow."
-```
-
----
-
-## 🎛️ GENRE PRESETS (THE SECRET SAUCE)
-
-### DnB Mode (`--genre dnb`)
-- Focus: Sub-bass clarity (40-80Hz)
-- Expect: Heavy sidechain, sharp transients
-- Warning if: Kick and bass fighting in same frequency
-
-### Techno Mode (`--genre techno`)
-- Focus: Kick weight (60-100Hz), hi-hat presence (8-12kHz)
-- Expect: 4/4 kick, minimal dynamics
-- Warning if: Too much mid-range mud (250-500Hz)
-
-### House Mode (`--genre house`)
-- Focus: Vocal clarity (2-5kHz), bass warmth (100-200Hz)
-- Expect: Groove, swing, dynamics
-- Warning if: Vocals buried or bass too thin
-
----
-
-## 🧪 TESTING WITH FAKE AUDIO
-
-Never commit real tracks. Generate synthetic test signals:
-
+### Type Hints (Required)
 ```python
-# Test fixtures should create:
-- Sine wave at 440Hz (A4 reference)
-- Pink noise (full spectrum)
-- Kick drum impulse (synthesized)
-- Silent buffer (edge case)
-- Clipped signal (for warning tests)
+# ✅ Good
+def detect_tempo(audio: NDArray[np.float32], sample_rate: int) -> TempoResult:
+    """Detect tempo with confidence score."""
+    ...
+
+# ❌ Bad - no types
+def detect_tempo(audio, sample_rate):
+    ...
+```
+
+### Docstrings (Google Style)
+```python
+def calculate_lufs(audio: NDArray[np.float32], sample_rate: int) -> LoudnessResult:
+    """Calculate EBU R128 loudness metrics.
+
+    Args:
+        audio: Audio signal (mono or stereo, float32)
+        sample_rate: Sample rate in Hz
+
+    Returns:
+        LoudnessResult with LUFS, true peak, and LRA
+
+    Raises:
+        ValueError: If audio is empty or sample_rate invalid
+
+    Example:
+        >>> audio, sr = load_audio("track.wav")
+        >>> result = calculate_lufs(audio, sr)
+        >>> print(f"LUFS: {result.lufs_integrated}")
+    """
+```
+
+### Naming Conventions
+- **Functions**: `snake_case` - `calculate_lufs()`, `detect_tempo()`
+- **Classes**: `PascalCase` - `LoudnessResult`, `TempoResult`
+- **Constants**: `UPPER_SNAKE` - `DEFAULT_SAMPLE_RATE`, `MIN_BPM`
+- **Private**: Leading `_` - `_convert_to_mono()`, `_validate_audio()`
+
+### Error Handling
+```python
+# ✅ Good - specific exceptions with helpful messages
+if not audio_path.exists():
+    raise AudioFileNotFoundError(f"File not found: {audio_path}")
+
+# ❌ Bad - generic exception
+if not audio_path.exists():
+    raise Exception("File not found")
 ```
 
 ---
 
-## 🚀 DEVELOPMENT MILESTONES
+## 🧪 TESTING PATTERNS
 
-### Week 1: Foundation
-- [ ] Project skeleton with uv
-- [ ] Basic CLI with `--help`
-- [ ] WAV file loader with channel handling
-- [ ] LUFS meter implementation
+### Test File Organization
+```
+tests/
+├── test_audio.py           # Audio loading tests
+├── test_loudness.py        # LUFS calculation tests
+├── test_tempo.py           # BPM detection tests
+├── test_key.py             # Key detection tests
+├── test_spectral.py        # Spectral analysis tests
+├── test_compare.py         # Comparison engine tests
+├── test_cli_*.py           # CLI command tests
+├── synthetic_audio.py      # Shared test fixtures
+└── conftest.py             # pytest configuration
+```
 
-### Week 2: Analysis Suite
-- [ ] BPM detection (with genre awareness)
-- [ ] Key detection (Camelot output)
-- [ ] Frequency band analyzer
-- [ ] `mixref analyze` command complete
+### Synthetic Audio Only
+```python
+# ✅ Good - generate test signals
+from tests.synthetic_audio import generate_sine_wave
 
-### Week 3: Comparison Engine
-- [ ] Track vs Reference comparison
+def test_lufs_calculation():
+    audio = generate_sine_wave(duration=1.0, frequency=440, sample_rate=44100)
+    result = calculate_lufs(audio, 44100)
+    assert result.lufs_integrated < 0
+
+# ❌ Bad - NEVER commit real audio files
+def test_lufs_calculation():
+    audio, sr = load_audio("data/real_track.wav")  # NO!
+```
+
+### Available Test Signals
+- `generate_sine_wave()` - Pure tones (A4 = 440Hz)
+- `generate_pink_noise()` - Full spectrum noise
+- `generate_silence()` - Silent buffer (edge case testing)
+- `generate_clipped_signal()` - Distorted/clipping audio
+- `generate_stereo_signal()` - Multi-channel audio
+
+### Coverage Requirements
+- **Minimum**: 85% overall coverage
+- **Target**: 90%+ for new features
+- **Critical paths**: 100% (audio loading, LUFS calculation)
+
+---
+
+## 🔄 DEVELOPMENT WORKFLOW
+
+### Starting New Feature
+```bash
+# 1. Create feature branch (optional)
+git checkout -b feature/batch-analysis
+
+# 2. Install dependencies if needed
+uv add librosa  # Example
+
+# 3. Run tests baseline
+uv run pytest
+
+# 4. Make changes...
+```
+
+### Before Every Commit
+```bash
+# Run the full quality check
+uv run ruff format src/ tests/ && \
+uv run ruff format --check src/ tests/ && \
+uv run ruff check src/ tests/ && \
+uv run mypy src/ && \
+uv run pytest
+```
+
+### Commit Message Format
+```bash
+# Format: <type>: <description>
+
+# Types:
+feat:     # New feature
+fix:      # Bug fix
+docs:     # Documentation only
+refactor: # Code restructuring
+test:     # Test changes
+chore:    # Build/tooling changes
+
+# Examples:
+git commit -m "feat: add A/B comparison engine"
+git commit -m "fix: correct stereo-to-mono conversion in BPM detection"
+git commit -m "docs: update README with compare command examples"
+```
+
+---
+
+## 🎧 AUDIO PHILOSOPHY
+
+### Loudness Targets
+- **Streaming**: -14 LUFS (Spotify, YouTube, Apple Music)
+- **Club/DnB**: -8 to -6 LUFS (maximum impact)
+- **True Peak**: Never clip above -1.0 dBTP
+- **LRA (Loudness Range)**:
+  - < 8 LU: Heavily compressed (EDM, DnB)
+  - > 12 LU: Dynamic (acoustic, jazz)
+
+### BPM Detection Philosophy
+Electronic music cheat codes:
+- If detected BPM < 100 → probably half-time → double it
+- **DnB range**: 160-180 BPM (typical: 174)
+- **Techno range**: 120-140 BPM (typical: 130)
+- **House range**: 118-128 BPM (typical: 124)
+- **Dubstep range**: 135-145 BPM (typical: 140)
+
+### Key Detection
+- **Prefer flats**: Eb minor, not D# minor (producer convention)
+- **Camelot codes**: 8A, 5B, etc. (DJ-friendly)
+- **Confidence thresholds**: > 0.6 = reliable, < 0.4 = ambiguous
+
+### Spectral Bands (Production-Focused)
+- **Sub (20-60Hz)**: Kick fundamental, sub-bass
+- **Low (60-250Hz)**: Bass, kick body
+- **Mid (250-2kHz)**: Vocals, snares, most instruments
+- **High (2-8kHz)**: Hi-hats, cymbals, vocal presence
+- **Air (8-20kHz)**: Sparkle, ambience
+
+---
+
+## 🚀 QUICK REFERENCE
+
+### Most Common Tasks
+
+**Run single test file:**
+```bash
+uv run pytest tests/test_tempo.py -v
+```
+
+**Check what changed:**
+```bash
+git status
+git diff
+```
+
+**Format and commit:**
+```bash
+uv run ruff format src/ tests/
+git add .
+git commit -m "feat: your message here"
+```
+
+**Test specific function:**
+```bash
+uv run pytest -k test_detect_bpm
+```
+
+**Run with coverage:**
+```bash
+uv run pytest --cov=src/mixref --cov-report=html
+```
+
+---
+
+## 💡 TIPS FOR COPILOT SESSIONS
+
+1. **Provide context**: Include file paths, function names, error messages
+2. **Show actual output**: Paste command results, stack traces, test failures
+3. **Be specific**: "Fix BPM detection for half-time tracks" > "Make BPM work better"
+4. **Spanish OK**: Comments in Spanish are fine for personal notes
+5. **Ask why**: Understanding beats memorizing
+
+### Example Good Prompts
+```
+"Create a function to compare two tracks' spectral balance.
+Should return percentage difference per band with 3% significance threshold.
+Include tests with synthetic audio."
+
+"The BPM detection returns 0.0 for data/example.wav. Error shows:
+'UserWarning: n_fft=2048 is too large for input signal of length=2'
+What's wrong with the mono conversion?"
+
+"Add a --json flag to the compare command that outputs comparison
+results in JSON format instead of Rich tables."
+```
+
+---
+
+## 📦 DEPENDENCIES
+
+### Core (Runtime)
+- **librosa**: Audio analysis (BPM, key, spectral)
+- **pyloudnorm**: EBU R128 loudness metering
+- **soundfile**: Audio file I/O
+- **typer**: CLI framework
+- **rich**: Terminal formatting
+
+### Development
+- **pytest**: Testing framework
+- **pytest-cov**: Coverage reporting
+- **mypy**: Type checking
+- **ruff**: Linting and formatting
+
+### Documentation
+- **sphinx**: Documentation generator
+- **sphinx-gallery**: Example gallery
+- **sphinx-rtd-theme**: ReadTheDocs theme
+
+---
+
+## 🎯 PROJECT STATUS (v0.3.0)
+
+### ✅ Completed
+- [x] Audio loading (WAV, FLAC, MP3, OGG, AIFF)
+- [x] LUFS metering (EBU R128)
+- [x] Platform targets (Spotify, YouTube, Club)
+- [x] Genre targets (DnB, Techno, House)
+- [x] BPM detection with half-time correction
+- [x] Musical key detection with Camelot codes
+- [x] Spectral analysis (5-band breakdown)
+- [x] `mixref analyze` command with Rich output
+- [x] JSON export for automation
+- [x] A/B comparison (`mixref compare`)
+- [x] Live terminal demos in README
+
+### 🚧 In Progress
+- [ ] Batch analysis (`mixref batch`)
 - [ ] Smart suggestions engine
-- [ ] Genre-specific feedback
-- [ ] `mixref compare` command
+- [ ] Genre-specific feedback improvements
 
-### Week 4: Polish & Ship
-- [ ] JSON output option
-- [ ] All tests passing
-- [ ] README with producer examples
-- [ ] PyPI package ready
-
----
-
-## 💬 CODE VOICE & STYLE
-
-- **Type hints**: Every function, no exceptions
-- **Docstrings**: Google style, include example usage
-- **Spanish comments**: OK for personal notes
-- **Function size**: If it doesn't fit on screen, split it
-- **Naming**: `calculate_lufs()` not `calcLufs()`
-- **Errors**: Custom exception classes, helpful messages
+### 📋 Planned
+- [ ] Audio preview/playback
+- [ ] Export comparison reports (PDF/HTML)
+- [ ] Integration with DAWs (Ableton, FL Studio)
+- [ ] Web UI (optional)
 
 ---
 
-## 🔧 QUICK START FOR DEVELOPER
-
-```bash
-# Inside the Copilot container:
-uv init mixref --package
-cd mixref
-
-# Create the audio soul:
-mkdir -p src/mixref/{audio,meters,detective,compare}
-
-# First command to build:
-echo 'Build the analyze command with loudness and BPM detection'
-```
-
----
-
-## 🎧 PRODUCER-FRIENDLY OUTPUT EXAMPLE
-
-What the user should see:
-
-```
-╭─ mixref analyze ──────────────────────────╮
-│                                           │
-│  Track:     neurofunk_banger.wav         │
-│  Duration:  4:22 | 160.5 BPM | 8A        │
-│                                           │
-│  LOUDNESS                                │
-│  • LUFS:    -6.2  (DnB target: -8 to -6) │
-│  • Peak:    -0.8 dBTP  ⚠️ Near clipping! │
-│  • LRA:     5.2 LU (very compressed)     │
-│                                           │
-│  SPECTRAL BALANCE                        │
-│  • Sub:     ■■■■■■■□□□ (strong)          │
-│  • Bass:    ■■■■■■■■■■ (dominant)        │
-│  • Mids:    ■■■■■□□□□□ (could open up)   │
-│  • Highs:   ■■■■■■■■■□ (crisp)           │
-│                                           │
-╰───────────────────────────────────────────╯
-
-⚠️  Suggestion: Your sub-bass is 4dB hotter than
-    typical DnB references. Check 40Hz region.
-```
-
----
-
-## 📦 SHIP CRITERIA
-
-Ready when:
-- [ ] Analyzes any WAV/FLAC/MP3 you throw at it
-- [ ] Gives useful feedback to producers
-- [ ] Runs fast enough for batch processing
-- [ ] Doesn't crash on weird edge cases
-- [ ] Makes a DnB producer nod and say "useful"
-
-Example output:
-
-```bash
-# Análisis rápido con output bonito
-$ mixref analyze my_track.wav
-
-╭─────────────────── Track Analysis ───────────────────╮
-│ File: my_track.wav                                   │
-│ Duration: 5:32 | Sample Rate: 44.1kHz | Stereo       │
-├──────────────────────────────────────────────────────┤
-│ 🎚️  LOUDNESS                                         │
-│   Integrated LUFS:  -8.2                             │
-│   True Peak:        -0.3 dBTP  ⚠️  (clip risk)       │
-│   LRA:              6.2 LU                           │
-│   Short-term range: -12.1 to -6.8 LUFS              │
-├──────────────────────────────────────────────────────┤
-│ 🎵  RHYTHM & TONALITY                                │
-│   BPM:              174 (confidence: 0.92)           │
-│   Key:              F minor (confidence: 0.78)       │
-├──────────────────────────────────────────────────────┤
-│ 📊  PLATFORM TARGETS                                 │
-│   Spotify (-14):    🔴 +5.8 dB too loud              │
-│   YouTube (-14):    🔴 +5.8 dB too loud              │
-│   Apple Music (-16):🔴 +7.8 dB too loud              │
-│   Club/DJ:          🟢 OK                            │
-╰──────────────────────────────────────────────────────╯
-
-# 🔥 LA FUNCIÓN KILLER: Comparación con referencia
-$ mixref compare my_mix.wav noisia_track.wav
-
-╭─────────────── Reference Comparison ─────────────────╮
-│ YOUR MIX vs REFERENCE                                │
-├──────────────────────────────────────────────────────┤
-│ LOUDNESS                    YOU      REF     DIFF    │
-│   Integrated LUFS:         -8.2    -6.1    -2.1 🔻   │
-│   True Peak:               -0.3    -0.8    +0.5 ⚠️   │
-│   Dynamic Range (LRA):      6.2     4.8    +1.4      │
-├──────────────────────────────────────────────────────┤
-│ SPECTRAL BALANCE           YOU      REF     DIFF    │
-│   Sub (20-60Hz):          -18.2   -15.1    -3.1 🔻   │
-│   Low (60-250Hz):         -12.4   -11.8    -0.6      │
-│   Mid (250-2kHz):          -8.1    -7.2    -0.9      │
-│   High (2k-8kHz):         -14.2   -12.1    -2.1 🔻   │
-│   Air (8k-20kHz):         -22.1   -18.4    -3.7 🔻   │
-├──────────────────────────────────────────────────────┤
-│ 💡 SUGGESTIONS                                       │
-│   • Tu sub está 3dB por debajo - revisa el sidechain│
-│   • Los highs podrían tener más presencia           │
-│   • Referencia más comprimida (considera limiter)   │
-╰──────────────────────────────────────────────────────╯
-
-# Batch analysis
-$ mixref batch ./renders/ --format csv > analysis.csv
-
-# JSON para scripts
-$ mixref analyze track.wav --json | jq '.lufs.integrated'
-```
+**Remember**: Quality over speed. Tests and types prevent bugs. Format before commit. 🎯

@@ -5,6 +5,7 @@ from rich.console import Console
 
 from mixref import __version__
 from mixref.cli.analyze import analyze_command
+from mixref.cli.compare import compare_command
 
 app = typer.Typer(
     name="mixref",
@@ -42,6 +43,7 @@ def main(
 
 # Register commands
 app.command(name="analyze")(analyze_command)
+app.command(name="compare")(compare_command)
 
 
 if __name__ == "__main__":
