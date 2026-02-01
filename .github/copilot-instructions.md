@@ -3,7 +3,65 @@
 **Project**: mixref – CLI Audio Analyzer for Music Producers  
 **Focus**: Electronic Music, Drum & Bass, Techno  
 **Status**: Active Development  
-**Last Updated**: 2026-01-30
+**Last Updated**: 2026-01-31
+
+---
+
+## ⚠️ CRITICAL: PRE-COMMIT REQUIREMENTS
+
+**BEFORE MAKING ANY CODE CHANGES**, understand this:
+
+### Why GitHub Actions Fail When Local Tests Pass
+
+GitHub Actions runs with **strict formatting checks** that may not be enforced in your local environment:
+
+1. **Formatting is MANDATORY**: All code must pass `ruff format --check`
+2. **Local testing might not catch this**: Your local environment may have different ruff settings or you might only run `ruff check` (which doesn't verify formatting)
+3. **CI/CD fails on unformatted code**: Even if tests pass locally
+
+### The Fix: ALWAYS Run These Commands Before Committing
+
+```bash
+# 1. Format ALL code (not just check - actually format it)
+uv run ruff format src/ tests/
+
+# 2. Verify formatting is correct
+uv run ruff format --check src/ tests/
+
+# 3. Run linting
+uv run ruff check src/ tests/
+
+# 4. Run type checking
+uv run mypy src/
+
+# 5. Run tests
+uv run pytest
+```
+
+### All-in-One Pre-Commit Command
+
+```bash
+uv run ruff format src/ tests/ && \
+uv run ruff format --check src/ tests/ && \
+uv run ruff check src/ tests/ && \
+uv run mypy src/ && \
+uv run pytest
+```
+
+**If ANY of these fail, DO NOT COMMIT.** Fix the issues first.
+
+### Common Formatting Issues
+
+1. **String quotes**: Ruff prefers double quotes `"` over single quotes `'`
+2. **Line length**: Keep lines under 88 characters (ruff default)
+3. **Function calls**: Ruff may condense multi-line calls that fit on one line
+4. **Import order**: Ruff automatically sorts imports
+
+### Why This Matters
+
+- ❌ **Without formatting**: GitHub Actions will fail with `action_required` status
+- ✅ **With formatting**: All workflows pass cleanly
+- 🎯 **Result**: Faster PR merges, no wasted CI/CD time
 
 ---
 

@@ -115,10 +115,7 @@ def analyze_command(
                 Genre.TRANCE: DetectiveGenre.TRANCE,
             }
             if genre in detective_genre_map:
-                bpm_result = correct_bpm(
-                    tempo_result.bpm,
-                    detective_genre_map[genre]
-                )
+                bpm_result = correct_bpm(tempo_result.bpm, detective_genre_map[genre])
 
         # Detect musical key
         if not json_output:

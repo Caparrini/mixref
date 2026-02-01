@@ -12,8 +12,8 @@ runner = CliRunner()
 
 def _strip_ansi(text: str) -> str:
     """Strip ANSI color codes from text."""
-    ansi_escape = re.compile(r'\x1b\[[0-9;]*m')
-    return ansi_escape.sub('', text)
+    ansi_escape = re.compile(r"\x1b\[[0-9;]*m")
+    return ansi_escape.sub("", text)
 
 
 def test_cli_help() -> None:
