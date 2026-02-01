@@ -1,5 +1,9 @@
 # mixref
 
+<p align="center">
+  <img src="docs/banner.svg" alt="mixref banner" width="800"/>
+</p>
+
 [![Tests](https://github.com/caparrini/mixref/actions/workflows/test.yml/badge.svg)](https://github.com/caparrini/mixref/actions/workflows/test.yml)
 [![Documentation](https://github.com/caparrini/mixref/actions/workflows/docs.yml/badge.svg)](https://github.com/caparrini/mixref/actions/workflows/docs.yml)
 [![Code Quality](https://github.com/caparrini/mixref/actions/workflows/quality.yml/badge.svg)](https://github.com/caparrini/mixref/actions/workflows/quality.yml)

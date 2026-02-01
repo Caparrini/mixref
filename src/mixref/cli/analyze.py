@@ -395,4 +395,5 @@ def _display_json(
             "message": message,
         }
 
-    console.print_json(json.dumps(output))
+    # Use plain print for JSON to avoid ANSI codes in tests
+    print(json.dumps(output, indent=2))

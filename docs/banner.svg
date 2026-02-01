@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="320" viewBox="0 0 800 320">
+  <defs>
+    <style>
+      text { font-family: 'Monaco', 'Menlo', 'Courier New', monospace; font-size: 14px; font-weight: bold; }
+      .waveform { fill: #00d9ff; }
+      .waveform-magenta { fill: #ff00ff; }
+      .waveform-yellow { fill: #ffd700; }
+      .cyan-bright { fill: #00ffff; }
+      .cyan { fill: #00aaaa; }
+      .magenta-bright { fill: #ff00ff; }
+      .magenta { fill: #aa00aa; }
+      .yellow-bright { fill: #ffff00; }
+      .yellow { fill: #aaaa00; }
+      .dim { fill: #666666; font-weight: normal; }
+    </style>
+  </defs>
+  
+  <rect width="800" height="320" fill="#0d1117"/>
+  
+  <!-- Top waveforms -->
+  <text x="100" y="40" class="waveform">▁▂▃▅▆▇█</text>
+  <text x="170" y="40" class="cyan">█▇▆▅▃▂▁</text>
+  <text x="260" y="40" class="waveform-magenta">▁▂▃▅▆▇█</text>
+  <text x="330" y="40" class="magenta">█▇▆▅▃▂▁</text>
+  <text x="420" y="40" class="waveform-yellow">▁▂▃▅▆▇█</text>
+  <text x="490" y="40" class="yellow">█▇▆▅▃▂▁</text>
+  
+  <!-- MIXREF ASCII art with gradients -->
+  <text x="50" y="90" class="cyan-bright">███╗   ███╗</text>
+  <text x="200" y="90" class="cyan">██╗</text>
+  <text x="260" y="90" class="magenta-bright">██╗  ██╗</text>
+  <text x="370" y="90" class="magenta">██████╗</text>
+  <text x="490" y="90" class="yellow-bright">███████╗</text>
+  <text x="620" y="90" class="yellow">███████╗</text>
+  
+  <text x="50" y="115" class="cyan-bright">████╗ ████║</text>
+  <text x="200" y="115" class="cyan">██║</text>
+  <text x="260" y="115" class="magenta-bright">╚██╗██╔╝</text>
+  <text x="370" y="115" class="magenta">██╔══██╗</text>
+  <text x="490" y="115" class="yellow-bright">██╔════╝</text>
+  <text x="620" y="115" class="yellow">██╔════╝</text>
+  
+  <text x="50" y="140" class="cyan-bright">██╔████╔██║</text>
+  <text x="200" y="140" class="cyan">██║</text>
+  <text x="260" y="140" class="magenta-bright"> ╚███╔╝</text>
+  <text x="370" y="140" class="magenta">██████╔╝</text>
+  <text x="490" y="140" class="yellow-bright">█████╗</text>
+  <text x="620" y="140" class="yellow">█████╗</text>
+  
+  <text x="50" y="165" class="cyan">██║╚██╔╝██║</text>
+  <text x="200" y="165" class="cyan">██║</text>
+  <text x="260" y="165" class="magenta"> ██╔██╗</text>
+  <text x="370" y="165" class="magenta">██╔══██╗</text>
+  <text x="490" y="165" class="yellow">██╔══╝</text>
+  <text x="620" y="165" class="yellow">██╔══╝</text>
+  
+  <text x="50" y="190" class="cyan">██║ ╚═╝ ██║</text>
+  <text x="200" y="190" class="cyan">██║</text>
+  <text x="260" y="190" class="magenta">██╔╝ ██╗</text>
+  <text x="370" y="190" class="magenta">██║  ██║</text>
+  <text x="490" y="190" class="yellow">███████╗</text>
+  <text x="620" y="190" class="yellow">██║</text>
+  
+  <text x="50" y="215" class="dim">╚═╝     ╚═╝</text>
+  <text x="200" y="215" class="dim">╚═╝</text>
+  <text x="260" y="215" class="dim">╚═╝  ╚═╝</text>
+  <text x="370" y="215" class="dim">╚═╝  ╚═╝</text>
+  <text x="490" y="215" class="dim">╚══════╝</text>
+  <text x="620" y="215" class="dim">╚═╝</text>
+  
+  <!-- Bottom waveforms -->
+  <text x="100" y="255" class="waveform-yellow">▁▂▃▅▆▇█</text>
+  <text x="170" y="255" class="yellow">█▇▆▅▃▂▁</text>
+  <text x="260" y="255" class="waveform">▁▂▃▅▆▇█</text>
+  <text x="330" y="255" class="cyan">█▇▆▅▃▂▁</text>
+  <text x="420" y="255" class="waveform-magenta">▁▂▃▅▆▇█</text>
+  <text x="490" y="255" class="magenta">█▇▆▅▃▂▁</text>
+  
+  <!-- Subtitle -->
+  <text x="160" y="295" class="dim" font-size="12">CLI Audio Analyzer for Music Producers</text>
+</svg>

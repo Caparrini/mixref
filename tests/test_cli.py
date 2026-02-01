@@ -29,8 +29,10 @@ def test_cli_version() -> None:
     result = runner.invoke(app, ["--version"])
     assert result.exit_code == 0
     output = _strip_ansi(result.stdout)
-    assert "mixref version" in output
+    # Now shows banner + "version X.X.X"
+    assert "version" in output
     assert __version__ in output
+    assert "CLI Audio Analyzer" in output  # Subtitle in banner
 
 
 def test_cli_version_short() -> None:
