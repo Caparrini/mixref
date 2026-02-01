@@ -26,6 +26,7 @@ class BPMRange:
         min_bpm: Minimum typical BPM for the genre.
         max_bpm: Maximum typical BPM for the genre.
         typical: Most common BPM for the genre.
+
     """
 
     min_bpm: float
@@ -54,6 +55,7 @@ class CorrectedBPM:
         correction_reason: Explanation of why correction was applied.
         in_genre_range: Whether corrected BPM is within genre range.
         genre: The genre used for validation (if any).
+
     """
 
     original_bpm: float
@@ -98,6 +100,7 @@ def correct_bpm(
         >>> result = correct_bpm(174.0, genre=Genre.DNB)
         >>> print(result.was_corrected)
         False
+
     """
     original_bpm = bpm
     corrected_bpm = bpm
@@ -165,6 +168,7 @@ def is_in_genre_range(bpm: float, genre: Genre) -> bool:
         True
         >>> is_in_genre_range(120.0, Genre.DNB)
         False
+
     """
     genre_range = GENRE_BPM_RANGES[genre]
     return genre_range.min_bpm <= bpm <= genre_range.max_bpm
@@ -185,5 +189,6 @@ def get_genre_range(genre: Genre) -> BPMRange:
         >>> range_info = get_genre_range(Genre.TECHNO)
         >>> print(f"{range_info.min_bpm}-{range_info.max_bpm} BPM")
         120.0-140.0 BPM
+
     """
     return GENRE_BPM_RANGES[genre]

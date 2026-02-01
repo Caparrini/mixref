@@ -21,6 +21,7 @@ class AudioInfo(NamedTuple):
         channels: Number of channels (1=mono, 2=stereo)
         format: File format (e.g., 'WAV', 'FLAC', 'MP3')
         subtype: Format subtype (e.g., 'PCM_16', 'FLOAT')
+
     """
 
     duration: float
@@ -47,6 +48,7 @@ def get_audio_info(path: str | Path) -> AudioInfo:
         >>> info = get_audio_info("my_track.wav")
         >>> print(f"Duration: {info.duration:.2f}s at {info.sample_rate}Hz")
         Duration: 180.50s at 44100Hz
+
     """
     path_obj = Path(path)
 
@@ -88,6 +90,7 @@ def validate_duration(
         >>> is_valid, msg = validate_duration("track.wav", min_duration=30.0)
         >>> if not is_valid:
         ...     print(f"Warning: {msg}")
+
     """
     info = get_audio_info(path)
 
@@ -133,6 +136,7 @@ def validate_sample_rate(
         >>> is_valid, msg = validate_sample_rate("track.wav", 44100)
         >>> if not is_valid:
         ...     print(f"Sample rate mismatch: {msg}")
+
     """
     info = get_audio_info(path)
 

@@ -27,6 +27,7 @@ class LoudnessComparison:
         track_lra: Track's loudness range in LU
         reference_lra: Reference's loudness range in LU
         lra_difference: Difference in LRA (positive = track has wider dynamics)
+
     """
 
     track_lufs: float
@@ -50,6 +51,7 @@ class BandComparison:
         reference_energy: Reference's energy in this band (percentage)
         difference: Difference in energy (positive = track has more energy)
         is_significant: True if difference is > 3dB (noticeable)
+
     """
 
     band_name: str
@@ -65,6 +67,7 @@ class SpectralComparison:
 
     Attributes:
         bands: List of band comparisons (Sub, Low, Mid, High, Air)
+
     """
 
     bands: list[BandComparison]
@@ -84,6 +87,7 @@ class ComparisonResult:
         bpm_difference: Difference in BPM (optional)
         track_key: Track's musical key (optional)
         reference_key: Reference's musical key (optional)
+
     """
 
     track_name: str
@@ -117,6 +121,7 @@ def compare_loudness(
         >>> comparison = compare_loudness(track_lufs, ref_lufs)
         >>> print(f"LUFS difference: {comparison.lufs_difference:+.1f} dB")
         LUFS difference: -2.1 dB
+
     """
     lufs_diff = track_result.integrated_lufs - reference_result.integrated_lufs
     peak_diff = track_result.true_peak_db - reference_result.true_peak_db
@@ -161,6 +166,7 @@ def compare_spectral(
         ...         print(f"{band.band_name}: {band.difference:+.1f}%")
         Sub: -3.2%
         High: +4.1%
+
     """
     # Create a dict for quick lookup by band name
     ref_bands = {band.band_name: band for band in reference_result.bands}
@@ -222,6 +228,7 @@ def compare_tracks(
         >>> result = compare_tracks(track, reference, sr, include_bpm=True)
         >>> print(f"LUFS diff: {result.loudness.lufs_difference:+.1f} dB")
         LUFS diff: -2.3 dB
+
     """
     # Validate inputs
     if sample_rate <= 0:

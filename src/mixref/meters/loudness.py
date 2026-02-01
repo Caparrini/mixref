@@ -21,6 +21,7 @@ class LoudnessResult(NamedTuple):
         loudness_range_lu: Loudness range (LRA) in LU, measures dynamic range
         short_term_max_lufs: Maximum short-term loudness in LUFS
         short_term_min_lufs: Minimum short-term loudness in LUFS
+
     """
 
     integrated_lufs: float
@@ -55,6 +56,7 @@ def calculate_lufs(audio: npt.NDArray[np.float32], sample_rate: int) -> Loudness
         Integrated: -8.2 LUFS
         >>> print(f"True Peak: {result.true_peak_db:.1f} dBTP")
         True Peak: -0.3 dBTP
+
     """
     # Validate input
     if audio.ndim not in (1, 2):

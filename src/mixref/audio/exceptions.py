@@ -22,6 +22,7 @@ class AudioFileNotFoundError(AudioError, FileNotFoundError):
         ...     load_audio("missing.wav")
         ... except AudioFileNotFoundError as e:
         ...     print(f"File not found: {e}")
+
     """
 
     def __init__(self, path: str, message: str | None = None) -> None:
@@ -48,6 +49,7 @@ class UnsupportedFormatError(AudioError):
         ...     load_audio("track.ogg")
         ... except UnsupportedFormatError as e:
         ...     print(f"Unsupported format: {e.format_}")
+
     """
 
     def __init__(
@@ -90,6 +92,7 @@ class CorruptFileError(AudioError):
         ... except CorruptFileError as e:
         ...     print(f"Cannot read file: {e}")
         ...     print(f"Original error: {e.original_error}")
+
     """
 
     def __init__(
@@ -120,6 +123,7 @@ class InvalidAudioDataError(AudioError):
     Example:
         >>> if audio.size == 0:
         ...     raise InvalidAudioDataError("Audio file contains no data")
+
     """
 
     pass

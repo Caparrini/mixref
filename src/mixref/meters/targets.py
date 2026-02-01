@@ -40,6 +40,7 @@ class LoudnessTarget(NamedTuple):
         max_lufs: Maximum acceptable LUFS (None = no maximum)
         max_true_peak_db: Maximum true peak in dBTP (typically -1.0)
         description: Description of the target use case
+
     """
 
     name: str
@@ -176,6 +177,7 @@ def get_target(platform: Platform | None = None, genre: Genre | None = None) -> 
         >>> target = get_target(genre=Genre.DNB)
         >>> print(f"DnB target: {target.target_lufs} LUFS")
         DnB target: -8.0 LUFS
+
     """
     if platform is None and genre is None:
         raise ValueError("Must specify either platform or genre")
@@ -216,6 +218,7 @@ def compare_to_target(
         >>> ok, diff, msg = compare_to_target(result.integrated_lufs, target)
         >>> print(msg)
         2.3 dB above Spotify target (-14.0 LUFS). Will be turned down.
+
     """
     difference = measured_lufs - target.target_lufs
 

@@ -74,6 +74,7 @@ def analyze_command(
 
     Raises:
         typer.Exit: If file not found or processing fails
+
     """
     # Check file exists
     if not file.exists():
@@ -157,6 +158,7 @@ def _display_table(
         spectral_result: Spectral analysis result
         platform: Platform target (optional)
         genre: Genre target (optional)
+
     """
     # Main results table
     table = Table(title=f"Analysis: {file.name}", show_header=True, header_style="bold")
@@ -248,6 +250,7 @@ def _display_comparison(message: str, is_ok: bool, target_type: str, target_name
         is_ok: Whether within acceptable range
         target_type: "Platform" or "Genre"
         target_name: Name of target (e.g., "spotify", "dnb")
+
     """
     console.print()
     console.print(f"[bold]{target_type} Target: {target_name.upper()}[/bold]")
@@ -268,6 +271,7 @@ def _lufs_status(lufs: float) -> str:
 
     Returns:
         Status emoji
+
     """
     if lufs > -6:
         return "🔴"  # Very loud
@@ -287,6 +291,7 @@ def _peak_status(peak: float) -> str:
 
     Returns:
         Status emoji
+
     """
     if peak > -0.1:
         return "🔴"  # Clipping danger
@@ -315,6 +320,7 @@ def _display_json(
         spectral_result: Spectral analysis result
         platform: Platform target (optional)
         genre: Genre target (optional)
+
     """
     import json
 

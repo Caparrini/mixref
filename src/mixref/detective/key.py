@@ -47,6 +47,7 @@ class KeyResult:
         key: Detected musical key (e.g., "C major", "Eb minor").
         camelot: Camelot wheel notation (e.g., "8B", "5A").
         confidence: Confidence score from 0.0 to 1.0.
+
     """
 
     key: str
@@ -83,6 +84,7 @@ def detect_key(
         >>> result = detect_key(audio, sr)
         >>> print(result.key)
         C major
+
     """
     if audio.size == 0:
         raise ValueError("Audio array is empty")
@@ -177,6 +179,7 @@ def get_compatible_keys(key: str) -> list[str]:
         >>> compatible = get_compatible_keys("8B")
         >>> print(compatible)
         ['7B', '9B', '8A']
+
     """
     # If given musical key, convert to Camelot
     if key in CAMELOT_WHEEL:

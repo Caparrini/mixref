@@ -60,6 +60,7 @@ def compare_command(
 
     Raises:
         typer.Exit: If files not found or processing fails
+
     """
     # Check files exist
     if not track.exists():
@@ -114,6 +115,7 @@ def _display_table(result: ComparisonResult) -> None:
 
     Args:
         result: ComparisonResult from compare_tracks
+
     """
     # Create main comparison table
     table = Table(
@@ -207,6 +209,7 @@ def _format_difference(diff: float, unit: str, threshold: float = 1.0, invert: b
 
     Returns:
         Formatted string with emoji and color
+
     """
     if abs(diff) < 0.1:
         return "[green]✅ Match[/green]"
@@ -246,6 +249,7 @@ def _format_spectral_difference(diff: float, is_significant: bool) -> str:
 
     Returns:
         Formatted string with color
+
     """
     if abs(diff) < 0.5:
         return "[green]✅ Match[/green]"
@@ -262,6 +266,7 @@ def _print_suggestions(result: ComparisonResult) -> None:
 
     Args:
         result: ComparisonResult
+
     """
     suggestions = []
 
@@ -311,6 +316,7 @@ def _get_band_freq_hint(band_name: str) -> str:
 
     Returns:
         Frequency range hint
+
     """
     hints = {
         "Sub": "20-60 Hz",
@@ -327,6 +333,7 @@ def _display_json(result: ComparisonResult) -> None:
 
     Args:
         result: ComparisonResult from compare_tracks
+
     """
     output = {
         "track": result.track_name,

@@ -65,6 +65,7 @@ def load_audio(
         >>> audio_mono, sr = load_audio("track.wav", channel_mode="mono")
         >>> audio_mono.shape
         (441000,)
+
     """
     path = Path(path)
 
@@ -114,6 +115,7 @@ def _mono_to_stereo(audio: npt.NDArray[np.float32]) -> npt.NDArray[np.float32]:
 
     Returns:
         Stereo audio array with shape (samples, 2)
+
     """
     return np.stack([audio, audio], axis=1)
 
@@ -126,6 +128,7 @@ def _stereo_to_mono(audio: npt.NDArray[np.float32]) -> npt.NDArray[np.float32]:
 
     Returns:
         Mono audio array with shape (samples,)
+
     """
     mono: npt.NDArray[np.float32] = np.mean(audio, axis=1).astype(np.float32)
     return mono
@@ -145,6 +148,7 @@ def _resample(
 
     Returns:
         Resampled audio array
+
     """
     # Para la primera versión, usamos librosa para resample
     # TODO: Considerar soxr para mejor calidad en el futuro

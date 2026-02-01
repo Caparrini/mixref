@@ -19,6 +19,7 @@ class FrequencyBand:
         name: Band name (e.g., "Sub", "Low").
         min_hz: Minimum frequency in Hz.
         max_hz: Maximum frequency in Hz.
+
     """
 
     name: str
@@ -44,6 +45,7 @@ class BandEnergy:
         band_name: Name of the frequency band.
         energy_db: RMS energy in dB.
         energy_percent: Energy as percentage of total (0-100).
+
     """
 
     band_name: str
@@ -58,6 +60,7 @@ class SpectralResult:
     Attributes:
         bands: List of band energy measurements.
         total_energy_db: Total RMS energy across all frequencies.
+
     """
 
     bands: list[BandEnergy]
@@ -93,6 +96,7 @@ def analyze_spectrum(
         >>> result = analyze_spectrum(audio, sr)
         >>> for band in result.bands:
         ...     print(f"{band.band_name}: {band.energy_percent:.1f}%")
+
     """
     if audio.size == 0:
         raise ValueError("Audio array is empty")
@@ -182,6 +186,7 @@ def compare_spectral_balance(
         >>> result1 = analyze_spectrum(audio1, sr)
         >>> result2 = analyze_spectrum(audio2, sr)
         >>> diff = compare_spectral_balance(result1, result2)
+
     """
     differences = {}
 

@@ -14,6 +14,7 @@ Example:
     >>> result = detect_bpm(audio, sr)
     >>> print(f"BPM: {result.bpm:.1f} (confidence: {result.confidence:.2f})")
     BPM: 120.0 (confidence: 0.95)
+
 """
 
 from dataclasses import dataclass
@@ -33,6 +34,7 @@ class TempoResult:
             Higher values indicate more reliable detection.
         onset_strength: Raw onset strength envelope used for detection.
             Useful for debugging or visualization.
+
     """
 
     bpm: float
@@ -86,6 +88,7 @@ def detect_bpm(
         >>>
         >>> result = detect_bpm(audio, sr)
         >>> assert 135 < result.bpm < 145  # Should be near 140
+
     """
     if audio.size == 0:
         raise ValueError("Audio array is empty")
