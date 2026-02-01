@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="terminal" baseProfile="full" viewBox="0 0 800 512" width="800" version="1.1">
+    <defs>
+        <termtosvg:template_settings xmlns:termtosvg="https://github.com/nbedos/termtosvg">
+            <termtosvg:screen_geometry columns="100" rows="30"/>
+            <termtosvg:animation type="css"/>
+        </termtosvg:template_settings>
+        <style type="text/css" id="generated-style"><![CDATA[#screen {
+                font-family: 'DejaVu Sans Mono', monospace;
+                font-style: normal;
+                font-size: 14px;
+            }
+
+        text {
+            dominant-baseline: text-before-edge;
+            white-space: pre;
+        }
+    
+            :root {
+                --animation-duration: 8000ms;
+            }
+
+            @keyframes roll {
+                0.000%{transform:translateY(0px)}
+31.113%{transform:translateY(-544px)}
+33.062%{transform:translateY(-1088px)}
+37.875%{transform:translateY(-1632px)}
+66.688%{transform:translateY(-2176px)}
+85.338%{transform:translateY(-2720px)}
+87.438%{transform:translateY(-3264px)}
+87.500%{transform:translateY(-3808px)}
+100.000%{transform:translateY(-3808px)}
+            }
+
+            #screen_view {
+                animation-duration: 8000ms;
+                animation-iteration-count:infinite;
+                animation-name:roll;
+                animation-timing-function: steps(1,end);
+                animation-fill-mode: forwards;
+            }
+        ]]></style>
+        <style type="text/css" id="user-style">
+            /* The colors defined below are the default 16 colors used for rendering text of the terminal. Adjust
+               them as needed.
+               PowerShell colors based on https://en.wikipedia.org/wiki/ANSI_escape_code#Colors */
+            .foreground {fill: #cccccc;}
+            .background {fill: #0c0c0c;}
+            .color0 {fill: #0c0c0c;}
+            .color1 {fill: #c50f1f;}
+            .color2 {fill: #13a10e;}
+            .color3 {fill: #c19c00;}
+            .color4 {fill: #0037da;}
+            .color5 {fill: #881798;}
+            .color6 {fill: #3a96dd;}
+            .color7 {fill: #cccccc;}
+            .color8 {fill: #767676;}
+            .color9 {fill: #e74856;}
+            .color10 {fill: #16c60c;}
+            .color11 {fill: #f9f1a5;}
+            .color12 {fill: #3b78ff;}
+            .color13 {fill: #b4009e;}
+            .color14 {fill: #61d6d6;}
+            .color15 {fill: #f2f2f2;}
+        </style>
+    </defs>
+    <svg id="screen" width="800" height="510" viewBox="0 0 800 510" preserveAspectRatio="xMidYMin slice">
+    <rect class="background" height="100%" width="100%" x="0" y="0"/><defs><g id="g1"><text x="0" textLength="360" class="foreground">$ mixref analyze data/example.wav --genre dnb</text></g><g id="g2"><text x="0" textLength="8" class="background"> </text></g><g id="g3"><text x="0" textLength="152" class="foreground">Loading example.wav</text><text x="152" textLength="24" class="color3">...</text></g><g id="g4"><text x="0" textLength="160" class="foreground">Calculating loudness</text><text x="160" textLength="24" class="color3">...</text></g><g id="g5"><text x="0" textLength="120" class="foreground">Detecting tempo</text><text x="120" textLength="24" class="color3">...</text></g><g id="g6"><text x="0" textLength="104" class="foreground">Detecting key</text><text x="104" textLength="24" class="color3">...</text></g><g id="g7"><text x="0" textLength="216" class="foreground">Analyzing frequency balance</text><text x="216" textLength="24" class="color3">...</text></g><g id="g8"><text x="0" textLength="800" class="foreground">/workspace/mixref/.venv/lib/python3.12/site-packages/librosa/core/spectrum.py:266: UserWarning: n_ff</text></g><g id="g9"><text x="0" textLength="384" class="foreground">t=2048 is too large for input signal of length=2</text></g><g id="g10"><text x="0" textLength="128" class="foreground">  warnings.warn(</text></g><g id="g11"><text x="0" textLength="376" font-style="italic" class="foreground">             Analysis: example.wav             </text></g><g id="g12"><text x="0" textLength="376" class="foreground">&#9487;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9523;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9523;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9491;</text></g><g id="g13"><text x="0" textLength="8" class="foreground">&#9475;</text><text x="8" textLength="168" font-weight="bold" class="foreground"> Metric              </text><text x="176" textLength="8" class="foreground">&#9475;</text><text x="184" textLength="112" font-weight="bold" class="foreground">        Value </text><text x="296" textLength="8" class="foreground">&#9475;</text><text x="304" textLength="64" font-weight="bold" class="foreground"> Status </text><text x="368" textLength="8" class="foreground">&#9475;</text></g><g id="g14"><text x="0" textLength="376" class="foreground">&#9505;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9543;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9543;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;&#9513;</text></g><g id="g15"><text x="0" textLength="8" class="foreground">&#9474;</text><text x="8" textLength="168" class="color6"> Integrated Loudness </text><text x="176" textLength="200" class="foreground">&#9474;    -3.1 LUFS &#9474;   &#128308;   &#9474;</text></g><g id="g16"><text x="0" textLength="8" class="foreground">&#9474;</text><text x="8" textLength="168" class="color6"> True Peak           </text><text x="176" textLength="200" class="foreground">&#9474;    -0.0 dBTP &#9474;   &#128308;   &#9474;</text></g><g id="g17"><text x="0" textLength="8" class="foreground">&#9474;</text><text x="8" textLength="168" class="color6"> Loudness Range      </text><text x="176" textLength="200" class="foreground">&#9474;       0.0 LU &#9474;   &#8505;    &#9474;</text></g><g id="g18"><text x="0" textLength="376" class="foreground">&#9500;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9532;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9532;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9508;</text></g><g id="g19"><text x="0" textLength="8" class="foreground">&#9474;</text><text x="8" textLength="168" class="color6"> Tempo               </text><text x="176" textLength="192" class="foreground">&#9474;    114.8 BPM &#9474;   &#9888;   &#9474;</text></g><g id="g20"><text x="0" textLength="8" class="foreground">&#9474;</text><text x="8" textLength="168" class="color6"> Key                 </text><text x="176" textLength="200" class="foreground">&#9474; E minor (9A) &#9474;   &#10067;   &#9474;</text></g><g id="g21"><text x="0" textLength="8" class="foreground">&#9474;</text><text x="8" textLength="168" class="color6"> Sub                 </text><text x="176" textLength="32" class="foreground">&#9474;   </text><text x="208" textLength="80" class="color5">&#9632;&#9632;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;</text><text x="288" textLength="88" class="foreground"> &#9474; 22.7%  &#9474;</text></g><g id="g22"><text x="0" textLength="8" class="foreground">&#9474;</text><text x="8" textLength="168" class="color6"> Low                 </text><text x="176" textLength="32" class="foreground">&#9474;   </text><text x="208" textLength="80" class="color4">&#9632;&#9632;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;</text><text x="288" textLength="88" class="foreground"> &#9474; 22.7%  &#9474;</text></g><g id="g23"><text x="0" textLength="8" class="foreground">&#9474;</text><text x="8" textLength="168" class="color6"> Mid                 </text><text x="176" textLength="32" class="foreground">&#9474;   </text><text x="208" textLength="80" class="color2">&#9632;&#9632;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;</text><text x="288" textLength="88" class="foreground"> &#9474; 22.6%  &#9474;</text></g><g id="g24"><text x="0" textLength="8" class="foreground">&#9474;</text><text x="8" textLength="168" class="color6"> High                </text><text x="176" textLength="32" class="foreground">&#9474;   </text><text x="208" textLength="80" class="color3">&#9632;&#9632;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;</text><text x="288" textLength="88" class="foreground"> &#9474; 20.6%  &#9474;</text></g><g id="g25"><text x="0" textLength="8" class="foreground">&#9474;</text><text x="8" textLength="168" class="color6"> Air                 </text><text x="176" textLength="32" class="foreground">&#9474;   </text><text x="208" textLength="80" class="color6">&#9632;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;&#9633;</text><text x="288" textLength="88" class="foreground"> &#9474; 11.3%  &#9474;</text></g><g id="g26"><text x="0" textLength="376" class="foreground">&#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;</text></g><g id="g27"><text x="0" textLength="136" font-weight="bold" class="foreground">Genre Target: DNB</text></g><g id="g28"><text x="0" textLength="16" class="color3">&#9888; </text><text x="16" textLength="24" font-weight="bold" class="color11">4.9</text><text x="40" textLength="232" class="color3"> dB above Drum &amp; Bass target </text><text x="272" textLength="40" font-weight="bold" class="color11">(-8.0</text><text x="312" textLength="40" class="color3"> LUFS</text><text x="352" textLength="8" font-weight="bold" class="color11">)</text><text x="360" textLength="272" class="color3">. May be turned down or distorted.</text></g></defs><g id="screen_view"><g><use xlink:href="#g1" y="0"/><rect x="0" y="34" width="8" height="17" class="foreground"/><use xlink:href="#g2" y="34"/></g><g><use xlink:href="#g1" y="544"/><use xlink:href="#g3" y="578"/><rect x="0" y="595" width="8" height="17" class="foreground"/><use xlink:href="#g2" y="595"/></g><g><use xlink:href="#g1" y="1088"/><use xlink:href="#g3" y="1122"/><use xlink:href="#g4" y="1139"/><rect x="0" y="1156" width="8" height="17" class="foreground"/><use xlink:href="#g2" y="1156"/></g><g><use xlink:href="#g1" y="1632"/><use xlink:href="#g3" y="1666"/><use xlink:href="#g4" y="1683"/><use xlink:href="#g5" y="1700"/><rect x="0" y="1717" width="8" height="17" class="foreground"/><use xlink:href="#g2" y="1717"/></g><g><use xlink:href="#g1" y="2176"/><use xlink:href="#g3" y="2210"/><use xlink:href="#g4" y="2227"/><use xlink:href="#g5" y="2244"/><use xlink:href="#g6" y="2261"/><rect x="0" y="2278" width="8" height="17" class="foreground"/><use xlink:href="#g2" y="2278"/></g><g><use xlink:href="#g1" y="2720"/><use xlink:href="#g3" y="2754"/><use xlink:href="#g4" y="2771"/><use xlink:href="#g5" y="2788"/><use xlink:href="#g6" y="2805"/><use xlink:href="#g7" y="2822"/><rect x="0" y="2839" width="8" height="17" class="foreground"/><use xlink:href="#g2" y="2839"/></g><g><use xlink:href="#g1" y="3264"/><use xlink:href="#g3" y="3298"/><use xlink:href="#g4" y="3315"/><use xlink:href="#g5" y="3332"/><use xlink:href="#g6" y="3349"/><use xlink:href="#g7" y="3366"/><use xlink:href="#g8" y="3383"/><use xlink:href="#g9" y="3400"/><use xlink:href="#g10" y="3417"/><rect x="0" y="3434" width="8" height="17" class="foreground"/><use xlink:href="#g2" y="3434"/></g><g><use xlink:href="#g3" y="3825"/><use xlink:href="#g4" y="3842"/><use xlink:href="#g5" y="3859"/><use xlink:href="#g6" y="3876"/><use xlink:href="#g7" y="3893"/><use xlink:href="#g8" y="3910"/><use xlink:href="#g9" y="3927"/><use xlink:href="#g10" y="3944"/><use xlink:href="#g11" y="3961"/><use xlink:href="#g12" y="3978"/><use xlink:href="#g13" y="3995"/><use xlink:href="#g14" y="4012"/><use xlink:href="#g15" y="4029"/><use xlink:href="#g16" y="4046"/><use xlink:href="#g17" y="4063"/><use xlink:href="#g18" y="4080"/><use xlink:href="#g19" y="4097"/><use xlink:href="#g20" y="4114"/><use xlink:href="#g18" y="4131"/><use xlink:href="#g21" y="4148"/><use xlink:href="#g22" y="4165"/><use xlink:href="#g23" y="4182"/><use xlink:href="#g24" y="4199"/><use xlink:href="#g25" y="4216"/><use xlink:href="#g26" y="4233"/><use xlink:href="#g27" y="4267"/><use xlink:href="#g28" y="4284"/><rect x="0" y="4301" width="8" height="17" class="foreground"/><use xlink:href="#g2" y="4301"/></g></g></svg>
+</svg>

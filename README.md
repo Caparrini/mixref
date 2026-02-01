@@ -118,6 +118,20 @@ mixref compare my_track.wav reference.wav --bpm --key
 mixref compare track1.wav track2.wav --json
 ```
 
+## Live Demos
+
+### 📊 Analyze Command
+
+![analyze demo](docs/demos/analyze-demo.svg)
+
+Analyze any track to get loudness metrics, BPM, key, and spectral balance. Add `--genre dnb` for genre-specific feedback.
+
+### 🔄 Compare Command
+
+![compare demo](docs/demos/compare-demo.svg)
+
+Compare your mix against professional references with side-by-side analysis and smart suggestions.
+
 ## Real-World Example
 
 ```bash
