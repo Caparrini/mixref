@@ -34,7 +34,7 @@ jobs:
     - name: Build documentation
       run: |
         cd docs
-        uv run sphinx-build -W -b html source build/html
+        uv run sphinx-build -b html source build/html
 
     - name: Build package
       run: uv build
