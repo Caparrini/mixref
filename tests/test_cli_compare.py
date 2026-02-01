@@ -107,12 +107,18 @@ def test_compare_reference_not_found(temp_audio_files: tuple[Path, Path]) -> Non
 
 def test_compare_help() -> None:
     """Test compare command help."""
+    import re
+
     result = runner.invoke(app, ["compare", "--help"])
 
+    # Strip ANSI escape codes for reliable testing
+    ansi_escape = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
+    clean_output = ansi_escape.sub("", result.stdout)
+
     assert result.exit_code == 0
-    assert "Compare your track" in result.stdout
-    assert "TRACK" in result.stdout
-    assert "REFERENCE" in result.stdout
-    assert "--bpm" in result.stdout
-    assert "--key" in result.stdout
-    assert "--json" in result.stdout
+    assert "Compare your track" in clean_output
+    assert "TRACK" in clean_output
+    assert "REFERENCE" in clean_output
+    assert "--bpm" in clean_output
+    assert "--key" in clean_output
+    assert "--json" in clean_output
