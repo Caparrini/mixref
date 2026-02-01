@@ -88,8 +88,14 @@ def detect_key(
         raise ValueError("Audio array is empty")
 
     # Convert to mono if needed
+    # Handle both (samples, channels) and (channels, samples) formats
     if audio.ndim > 1:
-        audio_mono = np.mean(audio, axis=0)
+        # Heuristic: if first dim is small (2 for stereo), it's (channels, samples)
+        # Otherwise it's (samples, channels)
+        if audio.shape[0] <= 8:  # Likely (channels, samples)
+            audio_mono = np.mean(audio, axis=0)
+        else:  # Likely (samples, channels)
+            audio_mono = np.mean(audio, axis=1)
     else:
         audio_mono = audio
 

@@ -53,7 +53,8 @@ def detect_bpm(
 
     Args:
         audio: Audio signal as numpy array.
-            Shape: (samples,) for mono or (channels, samples) for multi-channel.
+            Shape: (samples,) for mono or (samples, channels) for multi-channel.
+            Also accepts (channels, samples) format.
             Multi-channel audio will be converted to mono for analysis.
         sample_rate: Sample rate in Hz (e.g., 44100).
         start_bpm: Initial tempo estimate in BPM for the algorithm.
@@ -90,8 +91,14 @@ def detect_bpm(
         raise ValueError("Audio array is empty")
 
     # Convert to mono if multi-channel
+    # Handle both (samples, channels) and (channels, samples) formats
     if audio.ndim > 1:
-        audio_mono = np.mean(audio, axis=0)
+        # Heuristic: if first dim is small (2 for stereo), it's (channels, samples)
+        # Otherwise it's (samples, channels)
+        if audio.shape[0] <= 8:  # Likely (channels, samples)
+            audio_mono = np.mean(audio, axis=0)
+        else:  # Likely (samples, channels)
+            audio_mono = np.mean(audio, axis=1)
     else:
         audio_mono = audio
 
